@@ -4,7 +4,10 @@ import pandas as pd
 import re
 from typing import Optional
 
-from src.utils import UNNAMED_HEADER_LABEL
+UNNAMED_HEADER_LABEL = "unnamed_header"
+
+COLUMN_NAME_NON_ALNUM_PATTERN = re.compile(r"[^0-9A-Za-z]+")
+COLUMN_NAME_UNDERSCORE_PATTERN = re.compile(r"_+")
 
 def clean_cell_text(value: object) -> str:
     if isinstance(value, float) and pd.isna(value):
