@@ -1,13 +1,9 @@
 from __future__ import annotations
 
 import pandas as pd
-import re
 from typing import Optional
 
-UNNAMED_HEADER_LABEL = "unnamed_header"
-
-COLUMN_NAME_NON_ALNUM_PATTERN = re.compile(r"[^0-9A-Za-z]+")
-COLUMN_NAME_UNDERSCORE_PATTERN = re.compile(r"_+")
+from src.constants.parsing import SHEET_WHITESPACE_PATTERN, UNNAMED_HEADER_LABEL
 
 def clean_cell_text(value: object) -> str:
     if isinstance(value, float) and pd.isna(value):
@@ -68,7 +64,7 @@ def build_column_names(header_row: pd.Series) -> list[str]:
         header_label = clean_cell_text(raw_value)
 
         if header_label:
-            header_label = re.sub(r"\s+", " ", header_label)
+            header_label = SHEET_WHITESPACE_PATTERN.sub(" ", header_label)
         else:
             header_label = f"{UNNAMED_HEADER_LABEL}_{unnamed_column_index}"
             unnamed_column_index += 1

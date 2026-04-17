@@ -1,16 +1,17 @@
 from __future__ import annotations
 
 from typing import Optional
-from src.types import TextCleaner, Metadata
-from src.preparation.series import is_missing_value
 
 import re
 import pandas as pd
 
-SHEET_WHITESPACE_PATTERN = re.compile(r"\s+")
-
-COLUMN_NAME_NON_ALNUM_PATTERN = re.compile(r"[^0-9A-Za-z]+")
-COLUMN_NAME_UNDERSCORE_PATTERN = re.compile(r"_+")
+from src.constants.parsing import (
+    COLUMN_NAME_NON_ALNUM_PATTERN,
+    COLUMN_NAME_UNDERSCORE_PATTERN,
+    SHEET_WHITESPACE_PATTERN,
+)
+from src.types import TextCleaner, Metadata
+from src.preparation.series import is_missing_value
 
 def clean_text(
     value: object,

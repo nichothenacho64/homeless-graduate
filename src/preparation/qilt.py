@@ -1,33 +1,26 @@
 from __future__ import annotations
 
-import re
 import pandas as pd
 
 from dataclasses import replace
 from typing import Optional
 
+from src.exceptions import EmptyTableError
+from src.parsers.qilt import QILTParsedSheet, parse_qilt_sheet
 from src.preparation.cleaners import (
     clean_column_name,
     clean_metadata_sections,
     clean_text,
     clean_text_value,
 )
-
+from src.preparation.numbers import parse_sheet_number
 from src.preparation.series import (
     coerce_numeric_series,
     series_is_numeric_like,
     series_is_text_like,
 )
-
-from src.preparation.numbers import parse_sheet_number
-
-from src.parsers.qilt import QILTParsedSheet, parse_qilt_sheet
+from src.constants.qilt import QILT_MISSING_TEXT_VALUES, QILT_TRAILING_FOOTNOTE_PATTERN
 from src.types import Folder
-
-QILT_MISSING_TEXT_VALUES = frozenset(
-    {"", "-", "—", "–", "..", "...", "n/a", "na", "n.p.", "n/p", "np", "nil"}
-)
-QILT_TRAILING_FOOTNOTE_PATTERN = re.compile(r"[*†‡]+$")
 
 def prepare_qilt_sheet(folder: Folder, file_name: str, sheet_name: str) -> QILTParsedSheet:
     parsed_sheet = parse_qilt_sheet(folder, file_name, sheet_name)
@@ -59,7 +52,7 @@ def clean_qilt_table(table: pd.DataFrame) -> pd.DataFrame:
     cleaned_table = cleaned_table.reset_index(drop=True)
     
     if cleaned_table.empty:
-        raise ValueError("The cleaned QILT table is empty.")
+        raise EmptyTableError("The cleaned QILT table")
 
     return cleaned_table
 

@@ -1,6 +1,6 @@
 from pathlib import Path
 from collections.abc import Iterable
-from src.utils import join_sorted
+from src.formatting import join_sorted
 
 class RawFolderNotFoundError(FileNotFoundError):
     def __init__(self, folder_path: Path, known_folders: Iterable[object]) -> None:
@@ -45,4 +45,23 @@ class SheetNotFoundError(ValueError):
             Sheet not found: {sheet_name!r} in {file_name}
             Available sheets: {formatted_sheets}
             """
+        )
+
+class EmptyTableError(ValueError):
+    def __init__(self, table_name: str) -> None:
+        super().__init__(f"{table_name} is empty.")
+
+class RequiredColumnsMissingError(ValueError):
+    def __init__(self, table_name: str, missing_columns: Iterable[object]) -> None:
+        joined_missing_columns = join_sorted(missing_columns)
+        super().__init__(f"{table_name} is missing required columns: {joined_missing_columns}")
+
+class InvalidSubgroupRowError(ValueError):
+    def __init__(self, source_name: str, reason: str) -> None:
+        super().__init__(f"{source_name} contains a subgroup row with {reason}.")
+
+class SubgroupRowsMismatchError(ValueError):
+    def __init__(self, source_name: str, comparison_name: str, preview: str) -> None:
+        super().__init__(
+            f"{source_name} contains subgroup rows that do not match {comparison_name}: {preview}"
         )

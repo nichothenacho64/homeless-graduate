@@ -5,12 +5,12 @@ from src.exceptions import (
     SpreadsheetFormatError,
     SheetNotFoundError,
 )
-
-from src.utils import (
+from src.constants.files import (
     RAW_DIR,
     RAW_DIR_LOOKUP,
-    SPREADSHEET_SUFFIXES,
 )
+
+from src.constants.parsing import SPREADSHEET_SUFFIXES
 from src.types import Folder
 
 from pathlib import Path

@@ -4,6 +4,8 @@ from typing import Optional
 
 import pandas as pd
 
+from src.constants.parsing import UNNAMED_HEADER_LABEL
+from src.exceptions import EmptyTableError
 from src.parsers.sheets import (
     build_column_names,
     clean_cell_text,
@@ -11,22 +13,13 @@ from src.parsers.sheets import (
     drop_trailing_blank_rows,
     get_row_texts,
 )
+from src.constants.qilt import (
+    QILT_HEADER_SEARCH_END_ROW_EXCLUSIVE,
+    QILT_HEADER_SEARCH_START_ROW,
+    QILT_METADATA_LABELS,
+    QILT_TITLE_ROW_INDEX,
+)
 from src.types import Metadata
-from src.parsers.sheets import UNNAMED_HEADER_LABEL
-
-QILT_METADATA_LABELS = {
-    "Column variables:",
-    "Column filters:",
-    "Column notes:",
-    "Row variables:",
-    "Row notes:",
-    "Row filters:",
-}
-
-QILT_TITLE_ROW_INDEX = 0
-
-QILT_HEADER_SEARCH_START_ROW = 3
-QILT_HEADER_SEARCH_END_ROW_EXCLUSIVE = 8
 
 
 def _is_qilt_metadata_label(text: str) -> bool:
@@ -100,7 +93,7 @@ def extract_table(
     table = drop_trailing_blank_rows(table)
 
     if table.empty:
-        raise ValueError("The extracted QILT core table is empty.")
+        raise EmptyTableError("The extracted QILT core table")
 
     return table
 
