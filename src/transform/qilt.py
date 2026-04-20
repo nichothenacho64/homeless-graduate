@@ -10,7 +10,6 @@ from src.constants.qilt import (
 )
 from src.preparation.qilt import clean_qilt_display_text, normalise_qilt_key_text
 
-
 def build_qilt_pair_label(
     low_label: object,
     high_label: object,
@@ -23,7 +22,6 @@ def build_qilt_pair_label(
 
     return f"{low_text} vs {high_text}"
 
-
 def format_qilt_subgroup_label(value: object) -> Optional[str]:
     text = clean_qilt_display_text(value)
 
@@ -31,7 +29,6 @@ def format_qilt_subgroup_label(value: object) -> Optional[str]:
         return None
 
     return QILT_SUBGROUP_TEXT_EQUIVALENTS.get(text, text)
-
 
 def make_qilt_subgroup_key(
     row_group: object,
@@ -43,34 +40,38 @@ def make_qilt_subgroup_key(
     if row_group_key is None or row_label_key is None:
         return None
 
-    return (row_group_key, row_label_key)
-
+    return row_group_key, row_label_key
 
 def select_qilt_ordered_pair_rows(
     group_table: pd.DataFrame,
     *,
     value_column: str,
 ) -> Optional[tuple[pd.Series, pd.Series]]:
-    valid_rows = group_table.loc[
-        group_table["row_label"].notna() & group_table[value_column].notna()
-    ].copy()
+    has_row_label = group_table["row_label"].notna()
+    has_value = group_table[value_column].notna()
+
+    valid_rows = group_table.loc[has_row_label & has_value].copy()
 
     if len(valid_rows) < 2:
         return None
 
-    row_group = clean_qilt_display_text(valid_rows["row_group"].iloc[0])
-    valid_rows["row_label_order"] = valid_rows["row_label"].map(
-        lambda value: _build_qilt_subgroup_order_key(row_group, value)
-    )
+    row_group = valid_rows["row_group"].iloc[0]
+    valid_rows["row_label_order"] = [
+        _build_qilt_subgroup_order_key(
+            row_group=row_group,
+            row_label=row_label,
+        )
+        for row_label in valid_rows["row_label"]
+    ]
+
     sorted_rows = valid_rows.sort_values(
-        [value_column, "row_label_order"],
+        by=[value_column, "row_label_order"],
         kind="mergesort",
     )
-    return (
-        sorted_rows.iloc[0],
-        sorted_rows.iloc[-1],
-    )
 
+    lowest_row = sorted_rows.iloc[0]
+    highest_row = sorted_rows.iloc[-1]
+    return lowest_row, highest_row
 
 def _build_qilt_subgroup_order_key(
     row_group: object,
@@ -78,18 +79,27 @@ def _build_qilt_subgroup_order_key(
 ) -> tuple[int, str]:
     row_group_text = clean_qilt_display_text(row_group)
     row_label_text = format_qilt_subgroup_label(row_label)
-    if row_group_text is not None:
-        ordered_labels = QILT_SUBGROUP_DISPLAY_ORDER_BY_ROW_GROUP.get(row_group_text, ())
-    else:
-        ordered_labels = ()
-    label_order_lookup = {
+
+    label_order_lookup = _build_qilt_subgroup_label_order_lookup(row_group_text)
+
+    label_key = row_label_text or ""
+    default_order = len(label_order_lookup)
+    label_order = label_order_lookup.get(label_key, default_order)
+
+    return label_order, label_key
+
+def _build_qilt_subgroup_label_order_lookup(
+    row_group_text: Optional[str],
+) -> dict[str, int]:
+    if row_group_text is None:
+        return {}
+
+    ordered_labels = QILT_SUBGROUP_DISPLAY_ORDER_BY_ROW_GROUP.get(
+        row_group_text,
+        (),
+    )
+
+    return {
         label: order
         for order, label in enumerate(ordered_labels)
     }
-    default_order = len(label_order_lookup)
-    key = row_label_text if row_label_text is not None else ""
-    order = label_order_lookup.get(key, default_order)
-    return (
-        order,
-        key,
-    )
