@@ -12,6 +12,27 @@ def clean_cell_text(value: object) -> str:
         return ""
 
     return str(value).strip()
+    
+    
+def normalise_cell_text(value: object) -> str:
+    text = clean_cell_text(value)
+    return SHEET_WHITESPACE_PATTERN.sub(" ", text)
+
+def require_cell_text(
+    raw_sheet: pd.DataFrame,
+    row_index: int,
+    col_index: int,
+    error_message: str,
+) -> str:
+    try:
+        text = clean_cell_text(raw_sheet.iat[row_index, col_index])
+    except IndexError as error:
+        raise ValueError(error_message) from error
+
+    if not text:
+        raise ValueError(error_message)
+
+    return text
 
 
 def get_row_texts(row: pd.Series) -> list[str]:

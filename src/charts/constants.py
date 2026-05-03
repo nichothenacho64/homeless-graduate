@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from src.constants import ASSETS_DIR
+from src.sources import ASSETS_DIR
 from src.types import AxisSpec
 
 SOURCE_SANS_3_FONT_FAMILY = "Source Sans 3"

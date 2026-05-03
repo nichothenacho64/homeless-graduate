@@ -3,8 +3,9 @@ from __future__ import annotations
 import pandas as pd
 
 from src.loaders import list_excel_sheets, load_excel_sheet
-from src.parsers.qilt_classification import classify_qilt_table
-from src.parsers.qilt_extract import (
+from src.types import Folder, QILTParsedSheet, QILTRowBounds, SheetTitleList
+from parsers.qilt_extraction import (
+    classify_qilt_table,
     extract_metadata_sections,
     extract_table,
     find_data_end_row,
@@ -13,7 +14,6 @@ from src.parsers.qilt_extract import (
     find_title,
     rename_dimension_columns,
 )
-from src.types import Folder, QILTParsedSheet, QILTRowBounds
 
 def parse_qilt_sheet(folder: Folder, file_name: str, sheet_name: str) -> QILTParsedSheet:
     raw_sheet = load_excel_sheet(folder, file_name, sheet_name, header=None)
@@ -50,7 +50,7 @@ def parse_qilt_sheet(folder: Folder, file_name: str, sheet_name: str) -> QILTPar
     )
 
 def find_all_qilt_sheets(folder: Folder, file_name: str) -> pd.DataFrame:
-    sheet_title_list: list[dict[str, int | str]] = []
+    sheet_title_list: SheetTitleList = []
     all_sheet_names = list_excel_sheets(folder, file_name)
     
     for sheet_number, sheet_name in enumerate(all_sheet_names, start=1):

@@ -15,6 +15,28 @@ QILT_TITLE_ROW_INDEX = 0
 QILT_HEADER_SEARCH_START_ROW = 3
 QILT_HEADER_SEARCH_END_ROW_EXCLUSIVE = 8
 
+ABS_CONTENTS_SHEET_NAME = "Contents"
+ABS_TITLE_ROW_INDEX = 2
+ABS_HEADER_FIRST_ROW_INDEX = 4
+ABS_FOOTER_NOTE_PATTERN = re.compile(r"^\([a-z]\)")
+ABS_FOOTER_PREFIXES = ("*", "#", "©")
+ABS_FOOTER_WORD_MARKERS = ("na ", "np ")
+ABS_TABLE_LABEL_PATTERN = re.compile(
+    r"^Table\s+(?P<NUMBER>\d+)\b\s*(?P<TITLE>.*)$",
+    re.IGNORECASE,
+)
+ABS_TABLE_SOURCE_KEY_PATTERN = re.compile(r"^SEW-T(?P<START>\d+)(?:-\d+)?$")
+ABS_MEASUREMENT_LABELS = {
+    "Estimate ('000)": "estimate_count",
+    "ESTIMATE ('000)": "estimate_count",
+    "Proportion (%)": "proportion_percent",
+    "Proportion (%)(a)": "proportion_percent",
+    "Relative Standard Error of estimate (%)": "rse_estimate_percent",
+    "Relative Standard Error of proportion (%)": "rse_proportion_percent",
+    "95% Margin of Error of proportion (±)": "moe_proportion_pp",
+    "95% Margin of error of proportion (±)": "moe_proportion_pp",
+}
+
 QILT_SINGLE_METRIC_EXPECTED_ROW_COUNT = 1
 QILT_METRIC_ROWS_MAX_ROW_COUNT = 5
 

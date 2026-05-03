@@ -41,15 +41,15 @@ def _find_abs_source_key(file_path: Path) -> str:
         start_table = int(table_match.group("START"))
         end_table = table_match.group("END")
         if end_table is None:
-            return f"SWE-T{start_table}"
+            return f"SEW-T{start_table}"
 
         end_table = int(end_table)
-        return f"SWE-T{start_table}-{end_table}"
+        return f"SEW-T{start_table}-{end_table}"
 
     if "DIL" in file_path.stem.upper():
-        return "SWE-DIL"
+        return "SEW-DIL"
 
-    return f"SWE-{_normalise_file_stem(file_path.stem)}"
+    return f"SEW-{_normalise_file_stem(file_path.stem)}"
 
 def find_abs_source_files(abs_directory: Path) -> dict[str, str]:
     if not abs_directory.exists() or not abs_directory.is_dir():

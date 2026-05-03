@@ -3,8 +3,7 @@ from typing import Optional, cast
 
 import pandas as pd
 
-from src.constants import RAW_DIR, RAW_DIR_LOOKUP
-from src.parsers.constants import SPREADSHEET_SUFFIXES
+from src.sources import RAW_DIR, RAW_DIR_LOOKUP, SPREADSHEET_SUFFIXES
 from src.exceptions import (
     RawFolderDirectoryError,
     RawFolderNotFoundError,

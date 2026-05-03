@@ -8,7 +8,11 @@ from src.parsers.constants import (
     QILT_HEADER_SEARCH_END_ROW_EXCLUSIVE,
     QILT_HEADER_SEARCH_START_ROW,
     QILT_METADATA_LABELS,
+    QILT_METRIC_ROWS_MAX_ROW_COUNT,
+    QILT_PARTICIPATING_INSTITIONS_LINE,
+    QILT_SINGLE_METRIC_EXPECTED_ROW_COUNT,
     QILT_TITLE_ROW_INDEX,
+    QILT_YEAR_PATTERN,
     UNNAMED_HEADER_LABEL,
 )
 from src.exceptions import EmptyTableError
@@ -19,7 +23,7 @@ from src.parsers.sheets import (
     drop_trailing_blank_rows,
     get_row_texts,
 )
-from src.types import Metadata
+from src.types import Metadata, QILTTableKind
 
 
 def _is_qilt_metadata_label(text: str) -> bool:
@@ -180,3 +184,47 @@ def rename_dimension_columns(table: pd.DataFrame, metadata: Metadata) -> pd.Data
         rename_map[row_label_column] = f"Row dimension {row_dimension_number}"
 
     return table.rename(columns=rename_map)
+
+def classify_qilt_table(table: pd.DataFrame) -> QILTTableKind:
+    column_names: list[str] = []
+    for column in table.columns:
+        column_names.append(str(column))
+
+    data_columns: list[str] = []
+    unnamed_prefix = UNNAMED_HEADER_LABEL + "_"
+
+    for column_name in column_names:
+        if not column_name.startswith(unnamed_prefix):
+            data_columns.append(column_name)
+
+    for column_name in column_names:
+        if QILT_PARTICIPATING_INSTITIONS_LINE in column_name:
+            return "collection_summary"
+
+    for column in table.columns:
+        values = table[column].dropna().astype(str).str.strip()
+        if (values == "Original Study Level").any():
+            return "transition_matrix"
+
+    row_count = len(table)
+    all_data_columns_are_years = True
+    any_data_column_is_year = False
+
+    for column_name in data_columns:
+        looks_like_year = QILT_YEAR_PATTERN.search(column_name) is not None
+
+        if looks_like_year:
+            any_data_column_is_year = True
+        else:
+            all_data_columns_are_years = False
+
+    if row_count == QILT_SINGLE_METRIC_EXPECTED_ROW_COUNT and all_data_columns_are_years:
+        return "single_metric_time_series"
+
+    if row_count <= QILT_METRIC_ROWS_MAX_ROW_COUNT and all_data_columns_are_years:
+        return "metric_rows"
+
+    if any_data_column_is_year:
+        return "wide_multi_year"
+
+    return "wide_table"

@@ -7,12 +7,14 @@ from typing import Callable, Literal, Optional
 import numpy as np
 import pandas as pd
 
-from src.constants import RAW_SOURCE_DIRS
+from src.sources import RAW_SOURCE_DIRS
 
 Folder = str | Path
 NumericValue = int | float
 Metadata = dict[str, list[str]]
 NullableNumericDtype = pd.Int64Dtype | pd.Float64Dtype
+SheetTitleList = list[dict[str, int | str]]
+BodyRowKind = Literal["label", "values"]
 
 QILTTableKind = Literal[
     "collection_summary",
@@ -21,6 +23,14 @@ QILTTableKind = Literal[
     "metric_rows",
     "wide_multi_year",
     "wide_table",
+]
+
+ABSMeasurement = Literal[
+    "estimate_count",
+    "proportion_percent",
+    "rse_estimate_percent",
+    "rse_proportion_percent",
+    "moe_proportion_pp",
 ]
 
 NumericConverter = Callable[[NumericValue], NumericValue]
@@ -80,4 +90,46 @@ class QILTParsedSheet:
     rows: QILTRowBounds
     classification: str
     table: pd.DataFrame
+    metadata: Metadata
+
+@dataclass(frozen=True, slots=True)
+class ABSMeasurementCell:
+    row: int
+    col: int
+    measurement: ABSMeasurement
+    measurement_label: str
+
+@dataclass(slots=True)
+class ABSBounds:
+    row_first: int
+    row_last: int
+    col_first: int
+    col_last: int
+
+@dataclass(slots=True)
+class ABSRowBounds:
+    header_first: int
+    header_last: int
+    body_first: int
+    body_last: int
+    footer_start: Optional[int]
+
+@dataclass(slots=True)
+class ABSParsedTable:
+    value_kind: ABSMeasurement
+    source_measurement_label: str
+    subject_label: Optional[str]
+    source_bounds: ABSBounds
+    row_bounds: ABSRowBounds
+    raw_table: pd.DataFrame
+    tidy_table: pd.DataFrame
+
+@dataclass(slots=True)
+class ABSParsedSheet:
+    source_file: str
+    sheet_name: str
+    title: str
+    rows: ABSRowBounds
+    table: pd.DataFrame
+    subtables: list[ABSParsedTable]
     metadata: Metadata

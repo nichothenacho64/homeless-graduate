@@ -58,11 +58,11 @@ def _is_bold_weight(weight: str | int | float) -> bool:
     if isinstance(weight, (int, float)):
         return weight >= 600
 
-    normalized_weight = str(weight).lower()
-    if normalized_weight in {"normal", "regular", "book", "roman", "medium"}:
+    normalised_weight = str(weight).lower()
+    if normalised_weight in {"normal", "regular", "book", "roman", "medium"}:
         return False
 
-    return font_manager.weight_dict.get(normalized_weight, 400) >= 600
+    return font_manager.weight_dict.get(normalised_weight, 400) >= 600
 
 
 def _resolve_text_font_variant(text: Text) -> Path:
