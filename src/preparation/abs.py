@@ -4,7 +4,6 @@ from typing import Optional, cast
 
 import pandas as pd
 
-from src.formatting import join_sorted
 from src.exceptions import EmptyTableError
 from src.parsers.abs import parse_abs_sheet
 from src.preparation.cleaners import (
@@ -18,14 +17,13 @@ from src.preparation.cleaners import (
 )
 from src.preparation.constants import (
     ABS_AUSTRALIA_HEADER_TOKENS,
+    ABS_STATE_TERRITORY_HEADER_TOKENS,
     ABS_TOTAL_HEADER_TOKENS,
     ABS_MEASUREMENT_COLUMNS,
     ABS_PREPARED_INDEX_COLUMNS,
     ABS_NO_PARENT_SENTINEL,
     ABS_MEASUREMENT_ALIASES,
-    ABS_NOT_AVAILABLE_VALUE_TEXT,
     ABS_RELIABILITY_MARKER_PATTERN,
-    ABS_SUPPRESSED_VALUE_TEXT,
     ABS_TRAILING_FOOTNOTE_PATTERN,
     ABS_VALUE_TRAILING_NOTE_PATTERN,
     ABS_WHOLE_YEAR_DECIMAL_PATTERN,
@@ -144,16 +142,11 @@ def _normalise_abs_records(records: pd.DataFrame) -> pd.DataFrame:
 
 def _normalise_abs_series(series: pd.Series, *, column_name: str) -> pd.Series:
     if column_name == "value":
-        cleaned_series = series.map(
+        return series.map(
             lambda value: clean_missing_text_value(
                 value,
                 missing_text_values=MISSING_TEXT_VALUES,
             )
-        )
-        return coerce_numeric_series(
-            cleaned_series,
-            column_name=column_name,
-            number_parser=parse_abs_number,
         )
 
     if column_name == "value_text":
@@ -189,7 +182,7 @@ def _abs_value_is_reliable(value: object) -> bool:
         return False
 
     marker = ABS_TRAILING_FOOTNOTE_PATTERN.sub("", text).strip().casefold()
-    if marker in {ABS_SUPPRESSED_VALUE_TEXT, ABS_NOT_AVAILABLE_VALUE_TEXT}:
+    if marker in {"np", "na"}:
         return False
 
     return ABS_RELIABILITY_MARKER_PATTERN.search(text) is None
@@ -208,11 +201,28 @@ def _keep_australia_aggregate_rows(records: pd.DataFrame) -> pd.DataFrame:
         header_columns=header_columns,
     )
     if not bool(australia_mask.any()):
+        if _records_are_implicit_national(records, header_columns):
+            # SEW charts use Australia-wide context. Some SEW time-series tables
+            # are already national and therefore have no state/territory column.
+            return records.reset_index(drop=True)
+
         raise ValueError(
             "Could not identify an Australia aggregate column in the ABS parsed table."
         )
 
     return records.loc[australia_mask].reset_index(drop=True)
+
+
+def _records_are_implicit_national(
+    records: pd.DataFrame,
+    header_columns: list[str],
+) -> bool:
+    for _, row in records.iterrows():
+        header_tokens = _collect_header_tokens(row, header_columns)
+        if any(token in ABS_STATE_TERRITORY_HEADER_TOKENS for token in header_tokens):
+            return False
+
+    return True
 
 
 def _find_column_header_fields(records: pd.DataFrame) -> list[str]:
@@ -363,8 +373,9 @@ def _pivot_measurements_to_schema(records: pd.DataFrame) -> pd.DataFrame:
 
     pivot_source = records.copy()
     pivot_source["_record_order"] = range(len(pivot_source))
-    pivot_source["measurement"] = pivot_source["measurement"].map(
-        _normalise_measurement_name
+    pivot_source["measurement"] = pivot_source.apply(
+        _normalise_measurement_name_for_row,
+        axis=1,
     )
 
     _fail_if_unexpected_measurements(pivot_source)
@@ -450,6 +461,22 @@ def _normalise_measurement_name(value: object) -> object:
     return ABS_MEASUREMENT_ALIASES.get(measurement, measurement)
 
 
+def _normalise_measurement_name_for_row(row: pd.Series) -> object:
+    measurement = _normalise_measurement_name(row["measurement"])
+    measurement_label = clean_source_text(
+        row.get("measurement_label"),
+        missing_text_values=ABS_EMPTY_TEXT_VALUES,
+    )
+
+    if (
+        measurement == "rse_estimate_percent"
+        and measurement_label == "Relative Standard Error of proportion (%)"
+    ):
+        return "rse_proportion_percent"
+
+    return measurement
+
+
 def _fail_if_unexpected_measurements(pivot_source: pd.DataFrame) -> None:
     unexpected_measurements = sorted(
         set(pivot_source["measurement"].dropna()) - set(ABS_MEASUREMENT_COLUMNS)
@@ -517,7 +544,8 @@ def _fail_if_duplicate_columns(records: pd.DataFrame) -> None:
         if is_duplicate
     }
     raise ValueError(
-        f"ABS column cleaning produced duplicate columns: {join_sorted(duplicates)}"
+        "ABS column cleaning produced duplicate columns: "
+        f"{', '.join(sorted(map(str, duplicates)))}"
     )
 
 

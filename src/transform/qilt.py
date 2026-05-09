@@ -10,17 +10,6 @@ from src.transform.constants import (
 )
 from src.preparation.qilt import clean_qilt_display_text, normalise_qilt_key_text
 
-def build_qilt_pair_label(
-    low_label: object,
-    high_label: object,
-) -> Optional[str]:
-    low_text = format_qilt_subgroup_label(low_label)
-    high_text = format_qilt_subgroup_label(high_label)
-
-    if low_text is None or high_text is None:
-        return None
-
-    return f"{low_text} vs {high_text}"
 
 def format_qilt_subgroup_label(value: object) -> Optional[str]:
     text = clean_qilt_display_text(value)

@@ -13,7 +13,9 @@ ABS_RELIABILITY_MARKER_PATTERN = re.compile(
     r"(?:\*\*|\*|#)(?=\s*(?:\([a-z]\)\s*)*$)",
     re.IGNORECASE,
 )
-MISSING_TEXT_VALUES = frozenset({"", "-", "—", "–", "..", "...", "n/a", "na", "n.p.", "n/p", "np"  "nil"})
+MISSING_TEXT_VALUES = frozenset(
+    {"", "-", "—", "–", "..", "...", "n/a", "na", "n.p.", "n/p", "np", "nil"}
+)
 
 ABS_TRAILING_FOOTNOTE_PATTERN = re.compile(
     r"(?:\s*\([a-z]\))+(?=\s*(?:$|\|))",
@@ -32,9 +34,11 @@ ABS_PREPARED_SCHEMA = [
     "row_parent",
     "row_label",
     "row_path",
+    "column_header",
     "estimate_count",
     "proportion_percent",
     "rse_estimate_percent",
+    "rse_proportion_percent",
     "margin_error_proportion",
     "is_reliable",
     "is_suppressed",
@@ -45,6 +49,7 @@ ABS_MEASUREMENT_COLUMNS = [
     "estimate_count",
     "proportion_percent",
     "rse_estimate_percent",
+    "rse_proportion_percent",
     "margin_error_proportion",
 ]
 ABS_MEASUREMENT_ALIASES = {
@@ -58,6 +63,7 @@ ABS_PREPARED_INDEX_COLUMNS = [
     "row_parent",
     "row_label",
     "row_path",
+    "column_header",
 ]
 ABS_ROW_IDENTITY_COLUMNS = [
     "table_number",
@@ -72,4 +78,24 @@ ABS_EMPTY_TEXT_VALUES = frozenset({""})
 ABS_DISPLAY_MISSING_TEXT_VALUES = MISSING_TEXT_VALUES - frozenset({"np", "na"})
 ABS_AUSTRALIA_HEADER_TOKENS = frozenset({"aust", "australia"})
 ABS_TOTAL_HEADER_TOKENS = frozenset({"all", "all persons", "persons", "total"})
+ABS_STATE_TERRITORY_HEADER_TOKENS = frozenset(
+    {
+        "act",
+        "australian capital territory",
+        "nsw",
+        "new south wales",
+        "nt",
+        "northern territory",
+        "qld",
+        "queensland",
+        "sa",
+        "south australia",
+        "tas",
+        "tasmania",
+        "vic",
+        "victoria",
+        "wa",
+        "western australia",
+    }
+)
 ABS_NO_PARENT_SENTINEL = "__ABS_NO_PARENT__"

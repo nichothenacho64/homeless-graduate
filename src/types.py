@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable, Literal, Optional
+from typing import Callable, Literal, Optional, TypeVar
 
 import numpy as np
 import pandas as pd
@@ -15,6 +15,9 @@ Metadata = dict[str, list[str]]
 NullableNumericDtype = pd.Int64Dtype | pd.Float64Dtype
 SheetTitleList = list[dict[str, int | str]]
 BodyRowKind = Literal["label", "values"]
+NumericConverter = Callable[[NumericValue], NumericValue]
+TextCleaner = Callable[[object], Optional[str]]
+NumberParser = Callable[[object], Optional[NumericValue]]
 
 QILTTableKind = Literal[
     "collection_summary",
@@ -29,12 +32,9 @@ ABSMeasurement = Literal[
     "estimate_count",
     "proportion_percent",
     "rse_estimate_percent",
+    "rse_proportion_percent",
     "margin_error_proportion",
 ]
-
-NumericConverter = Callable[[NumericValue], NumericValue]
-TextCleaner = Callable[[object], Optional[str]]
-NumberParser = Callable[[object], Optional[NumericValue]]
 
 @dataclass(frozen=True, slots=True)
 class AxisSpec:
@@ -151,3 +151,6 @@ class ABSPreparedSheet:
     title: str
     table: pd.DataFrame
     metadata: Metadata
+
+PreparedSheet = TypeVar("PreparedSheet", QILTPreparedSheet, ABSPreparedSheet)
+SheetPreparer = Callable[[Folder, str, str], PreparedSheet]
