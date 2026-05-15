@@ -6,12 +6,30 @@ import pandas as pd
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
-import src.charts.constants as ChartConstants
-import src.charts.style as ChartStyle
+from src.charts.constants import (
+    AXIS_GRID_LINEWIDTH,
+    CHART_2_GAP_LABEL_OFFSET,
+    CHART_2_TITLE,
+    CHART_2_X_AXIS,
+    CONNECTOR_COLOR,
+    DUMBBELL_CONNECTOR_ZORDER,
+    DUMBBELL_LEFT_POINT_ZORDER,
+    DUMBBELL_RIGHT_POINT_ZORDER,
+    GRID_COLOR,
+    SHORT_TERM_COLOR,
+    SUBGROUP_CHART_TITLE_FONT_SIZE,
+    TEXT_COLOR,
+)
+from src.charts.style import (
+    add_figure_legend,
+    apply_chart_style,
+    draw_figure,
+    draw_group_pair_y_labels,
+)
 
 
 def create_chart_2(chart_table: pd.DataFrame) -> Figure:
-    ChartStyle.apply_chart_style()
+    apply_chart_style()
     ordered_table = chart_table.sort_values(
         ["sort_order", "subgroup_dimension"],
         kind="mergesort",
@@ -28,67 +46,67 @@ def create_chart_2(chart_table: pd.DataFrame) -> Figure:
         row_positions[available_mask],
         lower_values[available_mask],
         higher_values[available_mask],
-        color=ChartConstants.CONNECTOR_COLOR,
+        color=CONNECTOR_COLOR,
         linewidth=2.3,
-        zorder=ChartConstants.DUMBBELL_CONNECTOR_ZORDER,
+        zorder=DUMBBELL_CONNECTOR_ZORDER,
     )
     axis.scatter(
         lower_values[available_mask],
         row_positions[available_mask],
-        color=ChartConstants.SHORT_TERM_COLOR,
+        color=SHORT_TERM_COLOR,
         s=42,
         label="Lower subgroup",
-        zorder=ChartConstants.DUMBBELL_LEFT_POINT_ZORDER,
+        zorder=DUMBBELL_LEFT_POINT_ZORDER,
     )
     axis.scatter(
         higher_values[available_mask],
         row_positions[available_mask],
         facecolors="white",
-        edgecolors=ChartConstants.SHORT_TERM_COLOR,
+        edgecolors=SHORT_TERM_COLOR,
         linewidths=1.4,
         s=42,
         label="Higher subgroup",
-        zorder=ChartConstants.DUMBBELL_RIGHT_POINT_ZORDER,
+        zorder=DUMBBELL_RIGHT_POINT_ZORDER,
     )
 
     for row_index in np.flatnonzero(available_mask.to_numpy()):
         axis.text(
             min(
-                higher_values.iloc[row_index] + ChartConstants.CHART_2_GAP_LABEL_OFFSET,
-                ChartConstants.CHART_2_X_AXIS.maximum - 0.4,
+                higher_values.iloc[row_index] + CHART_2_GAP_LABEL_OFFSET,
+                CHART_2_X_AXIS.maximum - 0.4,
             ),
             row_positions[row_index],
             f"{gap_values.iloc[row_index]:.1f} pp",
             fontsize=8,
-            color=ChartConstants.TEXT_COLOR,
+            color=TEXT_COLOR,
             ha="left",
             va="center",
         )
 
     _draw_pair_y_labels(axis, row_positions, ordered_table)
     axis.set_title(
-        ChartConstants.CHART_2_TITLE,
+        CHART_2_TITLE,
         loc="left",
-        fontsize=ChartConstants.SUBGROUP_CHART_TITLE_FONT_SIZE,
-        color=ChartConstants.TEXT_COLOR,
+        fontsize=SUBGROUP_CHART_TITLE_FONT_SIZE,
+        color=TEXT_COLOR,
     )
     axis.set_xlabel("2024 short-term full-time employment (%)")
-    axis.set_xlim(*ChartConstants.CHART_2_X_AXIS.limits)
-    axis.set_xticks(ChartConstants.CHART_2_X_AXIS.ticks)
+    axis.set_xlim(*CHART_2_X_AXIS.limits)
+    axis.set_xticks(CHART_2_X_AXIS.ticks)
     axis.grid(
         axis="x",
-        color=ChartConstants.GRID_COLOR,
-        linewidth=ChartConstants.AXIS_GRID_LINEWIDTH,
+        color=GRID_COLOR,
+        linewidth=AXIS_GRID_LINEWIDTH,
     )
     axis.set_axisbelow(True)
     axis.spines["top"].set_visible(False)
     axis.spines["right"].set_visible(False)
-    axis.tick_params(colors=ChartConstants.TEXT_COLOR)
+    axis.tick_params(colors=TEXT_COLOR)
     axis.invert_yaxis()
 
-    ChartStyle.add_figure_legend(figure, axis, anchor=(0.98, 0.98))
+    add_figure_legend(figure, axis, anchor=(0.98, 0.98))
     figure.tight_layout(rect=(0, 0, 1, 0.92))
-    return ChartStyle.draw_figure(figure)
+    return draw_figure(figure)
 
 
 def _draw_pair_y_labels(
@@ -103,7 +121,7 @@ def _draw_pair_y_labels(
             ordered_table["higher_group"],
         )
     ]
-    ChartStyle.draw_group_pair_y_labels(
+    draw_group_pair_y_labels(
         axis,
         row_positions,
         ordered_table["subgroup_dimension"],

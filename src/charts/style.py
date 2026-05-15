@@ -16,7 +16,27 @@ from matplotlib.text import Text
 from matplotlib.transforms import blended_transform_factory
 
 from src.preparation.series import is_missing_value
-import src.charts.constants as ChartConstants
+from src.charts.constants import (
+    AXIS_GRID_LINEWIDTH,
+    AXIS_TITLE_FONT_SIZE,
+    CONNECTOR_COLOR,
+    DUMBBELL_CONNECTOR_LINEWIDTH,
+    DUMBBELL_CONNECTOR_ZORDER,
+    DUMBBELL_LEFT_POINT_ZORDER,
+    DUMBBELL_RIGHT_POINT_ZORDER,
+    GRID_COLOR,
+    GROUP_BOUNDARY_LINEWIDTH,
+    GROUP_BOUNDARY_POSITION_OFFSET,
+    GROUP_PAIR_LABEL_LINE_OFFSET,
+    GROUP_PAIR_LABEL_X_POSITION,
+    MEDIUM_TERM_COLOR,
+    SHORT_TERM_COLOR,
+    SOURCE_SANS_3_DIRECTORY,
+    SOURCE_SANS_3_FONT_FAMILY,
+    SOURCE_SANS_3_VARIANTS,
+    SUBGROUP_Y_TICK_FONT_SIZE,
+    TEXT_COLOR,
+)
 from src.transform.constants import QILT_SUBGROUP_TEXT_EQUIVALENTS
 
 
@@ -24,24 +44,22 @@ from src.transform.constants import QILT_SUBGROUP_TEXT_EQUIVALENTS
 def _load_source_sans_3_font_variants() -> dict[str, Path]:
     font_paths = {
         path.name: path
-        for path in ChartConstants.SOURCE_SANS_3_DIRECTORY.iterdir()
+        for path in SOURCE_SANS_3_DIRECTORY.iterdir()
         if path.suffix.lower() in {".ttf", ".otf"}
     }
 
     if not font_paths:
-        raise FileNotFoundError(
-            f"No font files found in {ChartConstants.SOURCE_SANS_3_DIRECTORY}"
-        )
+        raise FileNotFoundError(f"No font files found in {SOURCE_SANS_3_DIRECTORY}")
 
     missing_variants = sorted(
         file_name
-        for file_name in ChartConstants.SOURCE_SANS_3_VARIANTS.values()
+        for file_name in SOURCE_SANS_3_VARIANTS.values()
         if file_name not in font_paths
     )
     if missing_variants:
         missing_display = ", ".join(missing_variants)
         raise FileNotFoundError(
-            f"Missing Source Sans 3 font variants in {ChartConstants.SOURCE_SANS_3_DIRECTORY}: "
+            f"Missing Source Sans 3 font variants in {SOURCE_SANS_3_DIRECTORY}: "
             f"{missing_display}"
         )
 
@@ -50,7 +68,7 @@ def _load_source_sans_3_font_variants() -> dict[str, Path]:
 
     return {
         variant_name: font_paths[file_name]
-        for variant_name, file_name in ChartConstants.SOURCE_SANS_3_VARIANTS.items()
+        for variant_name, file_name in SOURCE_SANS_3_VARIANTS.items()
     }
 
 
@@ -98,15 +116,15 @@ def apply_chart_style() -> None:
     _load_source_sans_3_font_variants()
 
     sans_serif_fonts = [
-        ChartConstants.SOURCE_SANS_3_FONT_FAMILY,
+        SOURCE_SANS_3_FONT_FAMILY,
         *[
             font_name
             for font_name in mpl.rcParams.get("font.sans-serif", [])
-            if font_name != ChartConstants.SOURCE_SANS_3_FONT_FAMILY
+            if font_name != SOURCE_SANS_3_FONT_FAMILY
         ],
     ]
 
-    mpl.rcParams["font.family"] = [ChartConstants.SOURCE_SANS_3_FONT_FAMILY]
+    mpl.rcParams["font.family"] = [SOURCE_SANS_3_FONT_FAMILY]
     mpl.rcParams["font.sans-serif"] = sans_serif_fonts
     mpl.rcParams["pdf.fonttype"] = 42
     mpl.rcParams["ps.fonttype"] = 42
@@ -120,9 +138,7 @@ def build_group_boundaries(levels_table: pd.DataFrame) -> list[float]:
 
     for group_size in group_sizes.iloc[:-1]:
         running_total += int(group_size)
-        boundaries.append(
-            running_total - ChartConstants.GROUP_BOUNDARY_POSITION_OFFSET
-        )
+        boundaries.append(running_total - GROUP_BOUNDARY_POSITION_OFFSET)
 
     return boundaries
 
@@ -179,25 +195,25 @@ def plot_dumbbell_series(
         row_positions,
         left_values,
         right_values,
-        color=ChartConstants.CONNECTOR_COLOR,
-        linewidth=ChartConstants.DUMBBELL_CONNECTOR_LINEWIDTH,
-        zorder=ChartConstants.DUMBBELL_CONNECTOR_ZORDER,
+        color=CONNECTOR_COLOR,
+        linewidth=DUMBBELL_CONNECTOR_LINEWIDTH,
+        zorder=DUMBBELL_CONNECTOR_ZORDER,
     )
     axis.scatter(
         left_values,
         row_positions,
-        color=ChartConstants.SHORT_TERM_COLOR,
+        color=SHORT_TERM_COLOR,
         s=marker_size,
         label=left_label,
-        zorder=ChartConstants.DUMBBELL_LEFT_POINT_ZORDER,
+        zorder=DUMBBELL_LEFT_POINT_ZORDER,
     )
     axis.scatter(
         right_values,
         row_positions,
-        color=ChartConstants.MEDIUM_TERM_COLOR,
+        color=MEDIUM_TERM_COLOR,
         s=marker_size,
         label=right_label,
-        zorder=ChartConstants.DUMBBELL_RIGHT_POINT_ZORDER,
+        zorder=DUMBBELL_RIGHT_POINT_ZORDER,
     )
 
 
@@ -205,8 +221,8 @@ def draw_group_boundaries(
     axis: Axes,
     boundaries: list[float],
     *,
-    color: str = ChartConstants.GRID_COLOR,
-    linewidth: float = ChartConstants.GROUP_BOUNDARY_LINEWIDTH,
+    color: str = GRID_COLOR,
+    linewidth: float = GROUP_BOUNDARY_LINEWIDTH,
 ) -> None:
     for boundary in boundaries:
         axis.axhline(boundary, color=color, linewidth=linewidth)
@@ -216,19 +232,19 @@ def style_outcome_axis(axis: Axes, *, title: str, x_label: str) -> None:
     axis.set_title(
         title,
         loc="left",
-        fontsize=ChartConstants.AXIS_TITLE_FONT_SIZE,
-        color=ChartConstants.TEXT_COLOR,
+        fontsize=AXIS_TITLE_FONT_SIZE,
+        color=TEXT_COLOR,
     )
     axis.set_xlabel(x_label)
     axis.grid(
         axis="x",
-        color=ChartConstants.GRID_COLOR,
-        linewidth=ChartConstants.AXIS_GRID_LINEWIDTH,
+        color=GRID_COLOR,
+        linewidth=AXIS_GRID_LINEWIDTH,
     )
     axis.set_axisbelow(True)
     axis.spines["top"].set_visible(False)
     axis.spines["right"].set_visible(False)
-    axis.tick_params(colors=ChartConstants.TEXT_COLOR)
+    axis.tick_params(colors=TEXT_COLOR)
     axis.invert_yaxis()
 
 
@@ -236,10 +252,10 @@ def style_group_header_ticks(axis: Axes, header_mask: list[bool]) -> None:
     for tick_label, is_group_header in zip(axis.get_yticklabels(), header_mask):
         tick_label.set_fontweight("bold" if is_group_header else "normal")
         tick_label.set_fontsize(
-            ChartConstants.SUBGROUP_Y_TICK_FONT_SIZE + (1 if is_group_header else 0)
+            SUBGROUP_Y_TICK_FONT_SIZE + (1 if is_group_header else 0)
         )
         tick_label.set_alpha(1.0 if is_group_header else 0.9)
-        tick_label.set_color(ChartConstants.TEXT_COLOR)
+        tick_label.set_color(TEXT_COLOR)
 
 
 def draw_group_pair_y_labels(
@@ -258,26 +274,26 @@ def draw_group_pair_y_labels(
         pair_label_text = "Unavailable" if is_missing_value(pair_label) else str(pair_label)
 
         axis.text(
-            ChartConstants.GROUP_PAIR_LABEL_X_POSITION,
-            row_position - ChartConstants.GROUP_PAIR_LABEL_LINE_OFFSET,
+            GROUP_PAIR_LABEL_X_POSITION,
+            row_position - GROUP_PAIR_LABEL_LINE_OFFSET,
             str(row_group),
             transform=transform,
             ha="right",
             va="center",
-            fontsize=ChartConstants.SUBGROUP_Y_TICK_FONT_SIZE + 1,
+            fontsize=SUBGROUP_Y_TICK_FONT_SIZE + 1,
             fontweight="bold",
-            color=ChartConstants.TEXT_COLOR,
+            color=TEXT_COLOR,
             clip_on=False,
         )
         axis.text(
-            ChartConstants.GROUP_PAIR_LABEL_X_POSITION,
-            row_position + ChartConstants.GROUP_PAIR_LABEL_LINE_OFFSET,
+            GROUP_PAIR_LABEL_X_POSITION,
+            row_position + GROUP_PAIR_LABEL_LINE_OFFSET,
             pair_label_text,
             transform=transform,
             ha="right",
             va="center",
-            fontsize=ChartConstants.SUBGROUP_Y_TICK_FONT_SIZE,
-            color=ChartConstants.TEXT_COLOR,
+            fontsize=SUBGROUP_Y_TICK_FONT_SIZE,
+            color=TEXT_COLOR,
             alpha=0.9,
             clip_on=False,
         )

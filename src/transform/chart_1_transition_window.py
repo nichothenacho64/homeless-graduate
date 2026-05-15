@@ -28,10 +28,16 @@ def build_chart_1_table(
     chart_table = pd.DataFrame(rows)
     chart_table["series_order"] = chart_table["series_key"].map(CHART_1_SERIES_ORDER)
     chart_table = chart_table.sort_values(
-        ["year", "series_order"],
+        ["display_year", "series_order"],
         kind="mergesort",
-    ).drop(columns="series_order")
-    return select_chart_table_schema(chart_table, CHART_1_TABLE_COLUMNS)
+    )
+    chart_table = select_chart_table_schema(chart_table, CHART_1_TABLE_COLUMNS)
+    chart_table.attrs["chart_metadata"] = {
+        "year_semantics": {
+            "display_year": "terminal_year_extracted_from_source_year_or_period_label",
+        },
+    }
+    return chart_table
 
 
 def _build_gos_short_term_full_time_rows(gos_table: pd.DataFrame) -> list[dict[str, object]]:
@@ -43,7 +49,7 @@ def _build_gos_short_term_full_time_rows(gos_table: pd.DataFrame) -> list[dict[s
     for _, row in total_rows.iterrows():
         prepared_rows.append(
             {
-                "year": _extract_terminal_year(row["row_group"]),
+                "display_year": _extract_terminal_year(row["row_group"]),
                 "series_key": CHART_1_GOS_SHORT_TERM_FTE_SERIES_KEY,
                 "value_pct": row["full_time_employment"],
                 "source_key": GOS_21_SOURCE_KEY,
@@ -57,17 +63,17 @@ def _build_gos_l_full_time_rows(gos_l_table: pd.DataFrame) -> list[dict[str, obj
     prepared_rows: list[dict[str, object]] = []
 
     for _, row in gos_l_table.iterrows():
-        year = _extract_terminal_year(row["year"])
+        display_year = _extract_terminal_year(row["year"])
         prepared_rows.extend(
             [
                 {
-                    "year": year,
+                    "display_year": display_year,
                     "series_key": CHART_1_GOS_L_SHORT_TERM_FTE_SERIES_KEY,
                     "value_pct": row["short_term_fte"],
                     "source_key": GOS_L_1_SOURCE_KEY,
                 },
                 {
-                    "year": year,
+                    "display_year": display_year,
                     "series_key": CHART_1_GOS_L_MEDIUM_TERM_FTE_SERIES_KEY,
                     "value_pct": row["medium_term_fte"],
                     "source_key": GOS_L_1_SOURCE_KEY,

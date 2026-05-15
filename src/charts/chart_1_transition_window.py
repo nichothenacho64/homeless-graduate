@@ -4,19 +4,32 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from matplotlib.figure import Figure
 
-import src.charts.constants as ChartConstants
-import src.charts.style as ChartStyle
+from src.charts.constants import (
+    AXIS_GRID_LINEWIDTH,
+    CHART_1_SERIES_COLORS,
+    CHART_1_SERIES_LABELS,
+    CHART_1_SERIES_MARKER_FACES,
+    CHART_1_TITLE,
+    CHART_1_Y_LIMITS,
+    CHART_1_Y_TICKS,
+    GRID_COLOR,
+    SUBGROUP_CHART_TITLE_FONT_SIZE,
+    TEXT_COLOR,
+)
+from src.charts.style import add_figure_legend, apply_chart_style, draw_figure
 from src.transform.constants import CHART_1_SERIES_ORDER
 
 
 def create_chart_1(chart_table: pd.DataFrame) -> Figure:
-    ChartStyle.apply_chart_style()
+    apply_chart_style()
     ordered_table = chart_table.copy()
-    ordered_table["series_order"] = ordered_table["series_key"].map(
-        CHART_1_SERIES_ORDER
-    )
+    if "series_order" not in ordered_table.columns:
+        ordered_table["series_order"] = ordered_table["series_key"].map(
+            CHART_1_SERIES_ORDER
+        )
+    x_column = "display_year" if "display_year" in ordered_table.columns else "year"
     ordered_table = ordered_table.sort_values(
-        ["series_order", "year"],
+        ["series_order", x_column],
         kind="mergesort",
     )
 
@@ -24,38 +37,38 @@ def create_chart_1(chart_table: pd.DataFrame) -> Figure:
 
     for series_key, series_table in ordered_table.groupby("series_key", sort=False):
         axis.plot(
-            series_table["year"],
+            series_table[x_column],
             series_table["value_pct"],
-            color=ChartConstants.CHART_1_SERIES_COLORS[series_key],
+            color=CHART_1_SERIES_COLORS[series_key],
             linewidth=2.4,
             marker="o",
             markersize=6,
-            markerfacecolor=ChartConstants.CHART_1_SERIES_MARKER_FACES[series_key],
-            markeredgecolor=ChartConstants.CHART_1_SERIES_COLORS[series_key],
+            markerfacecolor=CHART_1_SERIES_MARKER_FACES[series_key],
+            markeredgecolor=CHART_1_SERIES_COLORS[series_key],
             markeredgewidth=1.2,
-            label=ChartConstants.CHART_1_SERIES_LABELS[series_key],
+            label=CHART_1_SERIES_LABELS[series_key],
         )
 
     axis.set_title(
-        ChartConstants.CHART_1_TITLE,
+        CHART_1_TITLE,
         loc="left",
-        fontsize=ChartConstants.SUBGROUP_CHART_TITLE_FONT_SIZE,
-        color=ChartConstants.TEXT_COLOR,
+        fontsize=SUBGROUP_CHART_TITLE_FONT_SIZE,
+        color=TEXT_COLOR,
     )
     axis.set_xlabel("Graduation year")
     axis.set_ylabel("Full-time employment (%)")
-    axis.set_ylim(*ChartConstants.CHART_1_Y_LIMITS)
-    axis.set_yticks(ChartConstants.CHART_1_Y_TICKS)
+    axis.set_ylim(*CHART_1_Y_LIMITS)
+    axis.set_yticks(CHART_1_Y_TICKS)
     axis.grid(
         axis="y",
-        color=ChartConstants.GRID_COLOR,
-        linewidth=ChartConstants.AXIS_GRID_LINEWIDTH,
+        color=GRID_COLOR,
+        linewidth=AXIS_GRID_LINEWIDTH,
     )
     axis.set_axisbelow(True)
     axis.spines["top"].set_visible(False)
     axis.spines["right"].set_visible(False)
-    axis.tick_params(colors=ChartConstants.TEXT_COLOR)
+    axis.tick_params(colors=TEXT_COLOR)
 
-    ChartStyle.add_figure_legend(figure, axis, anchor=(0.98, 0.98))
+    add_figure_legend(figure, axis, anchor=(0.98, 0.98))
     figure.tight_layout(rect=(0, 0, 1, 0.92))
-    return ChartStyle.draw_figure(figure)
+    return draw_figure(figure)

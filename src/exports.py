@@ -21,7 +21,6 @@ from src.transform.constants import (
 )
 from src.types import ABSPreparedSheet, ChartMetadata, MissingValues, QILTPreparedSheet
 
-
 def export_chart_table(table: pd.DataFrame, filename: str) -> Path:
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
     path = PROCESSED_DIR / filename
@@ -70,6 +69,8 @@ def build_chart_metadata(
             "source_keys": source_keys,
             "sources": source_metadata,
         }
+        chart_specific_metadata = _build_chart_specific_metadata(chart_table)
+        chart_entry.update(chart_specific_metadata)
 
         row_caveats = _build_missing_value_caveats(chart_table)
         if row_caveats:
@@ -78,6 +79,16 @@ def build_chart_metadata(
         metadata[chart_id] = chart_entry
 
     return metadata
+
+
+def _build_chart_specific_metadata(chart_table: pd.DataFrame) -> ChartMetadata:
+    chart_metadata = chart_table.attrs.get("chart_metadata", {})
+    if not isinstance(chart_metadata, Mapping):
+        raise TypeError(
+            f"Chart table {"chart_metadata"!r} attribute must be a mapping."
+        )
+
+    return dict(chart_metadata)
 
 
 def build_qilt_source_metadata(source_key: str, prepared_sheet: QILTPreparedSheet) -> ChartMetadata:

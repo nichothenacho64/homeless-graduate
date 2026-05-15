@@ -7,14 +7,34 @@ from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
 from src.preparation.series import is_missing_value
-import src.charts.constants as ChartConstants
-import src.charts.style as ChartStyle
+from src.charts.constants import (
+    AXIS_GRID_LINEWIDTH,
+    CATCH_UP_MEDIUM_TERM_LABEL,
+    CATCH_UP_SHORT_TERM_LABEL,
+    CHART_3_TITLE,
+    CHART_3_X_AXIS,
+    CONNECTOR_COLOR,
+    DUMBBELL_CONNECTOR_ZORDER,
+    DUMBBELL_LEFT_POINT_ZORDER,
+    DUMBBELL_RIGHT_POINT_ZORDER,
+    GRID_COLOR,
+    MEDIUM_TERM_COLOR,
+    SHORT_TERM_COLOR,
+    SUBGROUP_CHART_TITLE_FONT_SIZE,
+    TEXT_COLOR,
+)
+from src.charts.style import (
+    add_figure_legend,
+    apply_chart_style,
+    draw_figure,
+    draw_group_pair_y_labels,
+)
 from src.transform.chart_3_gap_shapes import build_chart_3_plot_table
 from src.transform.constants import MEDIUM_TERM_TIME_WINDOW, SHORT_TERM_TIME_WINDOW
 
 
 def create_chart_3(chart_table: pd.DataFrame) -> Figure:
-    ChartStyle.apply_chart_style()
+    apply_chart_style()
     plot_table = build_chart_3_plot_table(chart_table)
     row_positions = np.arange(len(plot_table))
 
@@ -27,53 +47,53 @@ def create_chart_3(chart_table: pd.DataFrame) -> Figure:
         row_positions[available_mask],
         short_gaps[available_mask],
         medium_gaps[available_mask],
-        color=ChartConstants.CONNECTOR_COLOR,
+        color=CONNECTOR_COLOR,
         linewidth=2.2,
-        zorder=ChartConstants.DUMBBELL_CONNECTOR_ZORDER,
+        zorder=DUMBBELL_CONNECTOR_ZORDER,
     )
     axis.scatter(
         short_gaps[available_mask],
         row_positions[available_mask],
-        color=ChartConstants.SHORT_TERM_COLOR,
+        color=SHORT_TERM_COLOR,
         s=44,
-        label=ChartConstants.CATCH_UP_SHORT_TERM_LABEL,
-        zorder=ChartConstants.DUMBBELL_LEFT_POINT_ZORDER,
+        label=CATCH_UP_SHORT_TERM_LABEL,
+        zorder=DUMBBELL_LEFT_POINT_ZORDER,
     )
     axis.scatter(
         medium_gaps[available_mask],
         row_positions[available_mask],
-        color=ChartConstants.MEDIUM_TERM_COLOR,
+        color=MEDIUM_TERM_COLOR,
         edgecolors="white",
         linewidths=0.9,
         s=44,
-        label=ChartConstants.CATCH_UP_MEDIUM_TERM_LABEL,
-        zorder=ChartConstants.DUMBBELL_RIGHT_POINT_ZORDER,
+        label=CATCH_UP_MEDIUM_TERM_LABEL,
+        zorder=DUMBBELL_RIGHT_POINT_ZORDER,
     )
 
     _draw_behind_y_labels(axis, row_positions, plot_table)
     axis.set_title(
-        ChartConstants.CHART_3_TITLE,
+        CHART_3_TITLE,
         loc="left",
-        fontsize=ChartConstants.SUBGROUP_CHART_TITLE_FONT_SIZE,
-        color=ChartConstants.TEXT_COLOR,
+        fontsize=SUBGROUP_CHART_TITLE_FONT_SIZE,
+        color=TEXT_COLOR,
     )
     axis.set_xlabel("Full-time employment gap width (percentage points)")
-    axis.set_xlim(*ChartConstants.CHART_3_X_AXIS.limits)
-    axis.set_xticks(ChartConstants.CHART_3_X_AXIS.ticks)
+    axis.set_xlim(*CHART_3_X_AXIS.limits)
+    axis.set_xticks(CHART_3_X_AXIS.ticks)
     axis.grid(
         axis="x",
-        color=ChartConstants.GRID_COLOR,
-        linewidth=ChartConstants.AXIS_GRID_LINEWIDTH,
+        color=GRID_COLOR,
+        linewidth=AXIS_GRID_LINEWIDTH,
     )
     axis.set_axisbelow(True)
     axis.spines["top"].set_visible(False)
     axis.spines["right"].set_visible(False)
-    axis.tick_params(colors=ChartConstants.TEXT_COLOR)
+    axis.tick_params(colors=TEXT_COLOR)
     axis.invert_yaxis()
 
-    ChartStyle.add_figure_legend(figure, axis, anchor=(0.98, 0.98))
+    add_figure_legend(figure, axis, anchor=(0.98, 0.98))
     figure.tight_layout(rect=(0, 0, 1, 0.92))
-    return ChartStyle.draw_figure(figure)
+    return draw_figure(figure)
 
 
 def _draw_behind_y_labels(
@@ -88,7 +108,7 @@ def _draw_behind_y_labels(
             plot_table[f"{MEDIUM_TERM_TIME_WINDOW}_lower_group"],
         )
     ]
-    ChartStyle.draw_group_pair_y_labels(
+    draw_group_pair_y_labels(
         axis,
         row_positions,
         plot_table["subgroup_dimension"],

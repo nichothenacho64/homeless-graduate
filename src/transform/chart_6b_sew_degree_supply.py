@@ -47,7 +47,11 @@ def build_chart_6b_table(sew_table_35_sheet: ABSPreparedSheet) -> pd.DataFrame:
         )
 
     chart_table = pd.DataFrame(prepared_rows).sort_values("year", kind="mergesort")
-    return select_chart_table_schema(chart_table, CHART_6B_TABLE_COLUMNS)
+    chart_table = select_chart_table_schema(chart_table, CHART_6B_TABLE_COLUMNS)
+    chart_table.attrs["chart_metadata"] = build_chart_6b_derivation_metadata(
+        sew_table_35_sheet,
+    )
+    return chart_table
 
 
 def build_chart_6b_derivation_metadata(
@@ -58,17 +62,14 @@ def build_chart_6b_derivation_metadata(
     base_value = _select_base_value(source_rows)
 
     return {
-        "source_key": SEW_35_SOURCE_KEY,
-        "source_label": f"SEW #{SEW_35_TABLE_NUMBER}",
-        "table_number": SEW_35_TABLE_NUMBER,
-        "measurement": SEW_35_MEASUREMENT_LABEL,
-        "qualification_filter": SEW_35_QUALIFICATION_FILTER,
-        "population_group": SEW_35_POPULATION_GROUP,
-        "row_label": SEW_35_ROW_LABEL,
         "base_year": SEW_DEGREE_SUPPLY_BASE_YEAR,
         "base_value": round(base_value, 1),
         "base_unit": SEW_DEGREE_SUPPLY_BASE_UNIT,
-        "index_formula": SEW_DEGREE_SUPPLY_INDEX_FORMULA,
+        "selected_measurement": SEW_35_MEASUREMENT_LABEL,
+        "selected_population_group": SEW_35_POPULATION_GROUP,
+        "selected_row_label": SEW_35_ROW_LABEL,
+        "qualification_filter": SEW_35_QUALIFICATION_FILTER,
+        "formula": SEW_DEGREE_SUPPLY_INDEX_FORMULA,
     }
 
 

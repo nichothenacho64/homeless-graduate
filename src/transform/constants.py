@@ -63,10 +63,11 @@ CHART_6B_INDEX_COLUMN = "bachelor_degree_or_above_count_index"
 
 CHART_TABLE_SCHEMAS = {
     CHART_1_ID: [
-        "year",
+        "display_year",
         "series_key",
         "value_pct",
         "source_key",
+        "series_order",
     ],
     CHART_2_ID: [
         "subgroup_dimension",
@@ -101,7 +102,7 @@ CHART_TABLE_SCHEMAS = {
     CHART_5_ID: [
         "study_area",
         "fte_gain_pp",
-        "fit_change_pp",
+        "underutilisation_reduction_pp",
         "fit_metric_key",
         "employment_source_key",
         "fit_source_key",
@@ -128,7 +129,7 @@ CHART_TABLE_SCHEMAS = {
         "group_label",
         "time_window",
         "time_window_order",
-        "value_pct",
+        "full_time_employment_pct",
         "source_key",
         "sort_order",
     ],
@@ -167,8 +168,8 @@ SEW_DEGREE_SUPPLY_YEARS = tuple(range(2016, 2026))
 
 SHORT_TERM_TIME_WINDOW = "short_term"
 MEDIUM_TERM_TIME_WINDOW = "medium_term"
-CHART_7_LOWER_GROUP_ROLE = "lower_reference"
-CHART_7_HIGHER_GROUP_ROLE = "higher_reference"
+CHART_7_GROUP_A_ROLE = "group_a"
+CHART_7_GROUP_B_ROLE = "group_b"
 
 CHART_5_WORK_FIT_METRIC_KEY = "skills_education_utilisation"
 

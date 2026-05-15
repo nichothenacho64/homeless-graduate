@@ -7,8 +7,8 @@ import pandas as pd
 from src.transform.chart_helpers import select_chart_table_schema
 from src.transform.constants import (
     CHART_7_TABLE_COLUMNS,
-    CHART_7_HIGHER_GROUP_ROLE,
-    CHART_7_LOWER_GROUP_ROLE,
+    CHART_7_GROUP_A_ROLE,
+    CHART_7_GROUP_B_ROLE,
     GOS_8_SOURCE_KEY,
     GOS_L_160_SOURCE_KEY,
     MEDIUM_TERM_TIME_WINDOW,
@@ -46,8 +46,8 @@ def build_chart_7_table(
     ]
     chart_table = pd.DataFrame(row for group_rows in summary_rows for row in group_rows)
     group_role_order = {
-        CHART_7_LOWER_GROUP_ROLE: 0,
-        CHART_7_HIGHER_GROUP_ROLE: 1,
+        CHART_7_GROUP_A_ROLE: 0,
+        CHART_7_GROUP_B_ROLE: 1,
     }
     chart_table["_group_role_order"] = [
         group_role_order[group_role]
@@ -57,7 +57,14 @@ def build_chart_7_table(
         ["sort_order", "time_window_order", "_group_role_order"],
         kind="mergesort",
     ).drop(columns="_group_role_order")
-    return select_chart_table_schema(chart_table, CHART_7_TABLE_COLUMNS)
+    chart_table = select_chart_table_schema(chart_table, CHART_7_TABLE_COLUMNS)
+    chart_table.attrs["chart_metadata"] = {
+        "group_role_semantics": {
+            "group_a": "first_group_in_comparison_label",
+            "group_b": "second_group_in_comparison_label",
+        },
+    }
+    return chart_table
 
 
 def _build_comparator_rows(group_table: pd.DataFrame) -> list[dict[str, object]]:
@@ -83,7 +90,7 @@ def _build_comparator_rows(group_table: pd.DataFrame) -> list[dict[str, object]]
             selector_id=selector_id,
             selector_label=subgroup_dimension,
             comparison_label=comparison_label,
-            group_role=CHART_7_LOWER_GROUP_ROLE,
+            group_role=CHART_7_GROUP_A_ROLE,
             sort_order=sort_order,
         ),
         *_build_group_rows(
@@ -91,7 +98,7 @@ def _build_comparator_rows(group_table: pd.DataFrame) -> list[dict[str, object]]
             selector_id=selector_id,
             selector_label=subgroup_dimension,
             comparison_label=comparison_label,
-            group_role=CHART_7_HIGHER_GROUP_ROLE,
+            group_role=CHART_7_GROUP_B_ROLE,
             sort_order=sort_order,
         ),
     ]
@@ -117,7 +124,7 @@ def _build_group_rows(
             "group_label": group_label,
             "time_window": SHORT_TERM_TIME_WINDOW,
             "time_window_order": 0,
-            "value_pct": row[QILT_SHORT_TERM_VALUE_COLUMN],
+            "full_time_employment_pct": row[QILT_SHORT_TERM_VALUE_COLUMN],
             "source_key": GOS_8_SOURCE_KEY,
             "sort_order": sort_order,
         },
@@ -130,7 +137,7 @@ def _build_group_rows(
             "group_label": group_label,
             "time_window": MEDIUM_TERM_TIME_WINDOW,
             "time_window_order": 1,
-            "value_pct": row[QILT_MEDIUM_TERM_VALUE_COLUMN],
+            "full_time_employment_pct": row[QILT_MEDIUM_TERM_VALUE_COLUMN],
             "source_key": GOS_L_160_SOURCE_KEY,
             "sort_order": sort_order,
         },
