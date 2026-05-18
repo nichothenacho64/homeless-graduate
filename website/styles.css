@@ -1,0 +1,14 @@
+:root {
+    --amber-700: #A55A1f;
+    --blue-700: #2F5D7E;
+    --amber-500: #D08A3C;
+    --blue-500: #5E88A8;
+    --amber-300: #E7C48B;
+    --blue-300: #AFC6D8;
+    --text-colour: #1F2328;
+    --background-colour: #FFFDF9;
+}
+
+body {
+    font-family: "Source Sans 3", sans-serif; 
+}
