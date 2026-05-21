@@ -129,6 +129,7 @@ def clean_metadata_sections(
         if section_label is None:
             continue
 
+        section_key = clean_column_name(section_label, text_cleaner=text_cleaner)
         cleaned_lines: list[str] = []
         for raw_line in raw_lines:
             line = text_cleaner(raw_line)
@@ -136,6 +137,6 @@ def clean_metadata_sections(
                 cleaned_lines.append(line)
 
         if cleaned_lines:
-            cleaned_metadata[section_label] = cleaned_lines
+            cleaned_metadata.setdefault(section_key, []).extend(cleaned_lines)
 
     return cleaned_metadata

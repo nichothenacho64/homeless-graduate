@@ -1,5 +1,6 @@
 import { addFonts } from "./setup.js";
 import { GLOBAL_CONFIG } from "./config.js";
+
 // test chart
 var trace1 = {
     x: [1, 2, 3, 4, 5],
