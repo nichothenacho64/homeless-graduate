@@ -16,8 +16,8 @@ from src.transform.chart_2_subgroup_bottleneck import build_chart_2_table
 from src.transform.chart_3_gap_shapes import build_chart_3_table
 from src.transform.chart_4_field_conversion import build_chart_4_table
 from src.transform.chart_5_work_fit import build_chart_5_table
-from src.transform.chart_6a_sew_skill_by_age import build_chart_6a_table
-from src.transform.chart_6b_sew_degree_supply import build_chart_6b_table
+from src.transform.chart_6a_skill_by_age import build_chart_6a_table
+from src.transform.chart_6b_degree_supply import build_chart_6b_table
 from src.transform.chart_7_subgroup_comparator import build_chart_7_table
 from src.transform.constants import (
     CHART_1_ID,

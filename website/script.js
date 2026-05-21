@@ -1,22 +1,5 @@
-function addFonts(layout) {
-    const fontFamily = '"Source Sans 3", sans-serif';
-
-    return {
-        ...layout,
-        font: {
-            ...layout.font,
-            family: fontFamily
-        },
-        hoverlabel: {
-            ...layout.hoverlabel,
-            font: {
-                ...layout.hoverlabel?.font, // optional chaining is neeeded here to prevent accessing .font on undefined
-                family: fontFamily
-            }
-        }
-    }
-}
-
+import { addFonts } from "./setup.js";
+import { GLOBAL_CONFIG } from "./config.js";
 // test chart
 var trace1 = {
     x: [1, 2, 3, 4, 5],
@@ -48,9 +31,6 @@ var layout = {
         range: [0, 8]
     },
     title: { text: 'Homeless graduate test chart' },
-    font: {
-        color: "#eb4040",
-    }
 };
 
-Plotly.newPlot('testChart', data, addFonts(layout));
+Plotly.newPlot('testChart', data, addFonts(layout), GLOBAL_CONFIG);

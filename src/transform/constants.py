@@ -13,8 +13,8 @@ CHART_2_ID = "chart_2_subgroup_bottleneck"
 CHART_3_ID = "chart_3_gap_shapes"
 CHART_4_ID = "chart_4_field_conversion"
 CHART_5_ID = "chart_5_work_fit"
-CHART_6A_ID = "chart_6a_sew_skill_by_age"
-CHART_6B_ID = "chart_6b_sew_degree_supply"
+CHART_6A_ID = "chart_6a_skill_by_age"
+CHART_6B_ID = "chart_6b_degree_supply"
 CHART_7_ID = "chart_7_subgroup_comparator"
 
 CHART_TABLE_IDS_BY_NUMBER = {
