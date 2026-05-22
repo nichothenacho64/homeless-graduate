@@ -20,19 +20,3 @@ export function unpack(data, key) {
 export function capitaliseWord(word) {
     return word.charAt(0).toUpperCase() + word.slice(1);
 }
-
-export function createChartElementId(chartId) {
-    let splitChartId = chartId.split("_");
-    console.log(splitChartId);
-    let chartElementId;
-
-    for (let i = 0; i < splitChartId.length; i++) {
-        if (i !== 0) {
-            chartElementId += capitaliseWord(splitChartId[i]);
-        } else {
-            chartElementId = splitChartId[i];
-        }
-    }
-
-    return chartElementId;
-}
