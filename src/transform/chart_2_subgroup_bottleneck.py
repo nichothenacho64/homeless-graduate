@@ -18,6 +18,26 @@ from src.transform.qilt import build_qilt_subgroup_pair_summary
 from src.types import PreparedRows, QILTPreparedSheet
 
 
+CHART_2_METADATA = {
+    "labels": {
+        "metrics": {
+            "gap_pp": {
+                "label": "Employment gap",
+                "unit": "percentage_point",
+            },
+            "lower_group_pct": {
+                "label": "Lower group full-time employment",
+                "unit": "percent",
+            },
+            "higher_group_pct": {
+                "label": "Higher group full-time employment",
+                "unit": "percent",
+            },
+        },
+    },
+}
+
+
 def build_chart_2_table(
     gos_sheet: QILTPreparedSheet,
     gender_sheet: Optional[QILTPreparedSheet] = None,
@@ -55,7 +75,9 @@ def build_chart_2_table(
         ["sort_order", "subgroup_dimension"],
         kind="mergesort",
     ).reset_index(drop=True)
-    return select_chart_table_schema(chart_table, CHART_2_TABLE_COLUMNS)
+    chart_table = select_chart_table_schema(chart_table, CHART_2_TABLE_COLUMNS)
+    chart_table.attrs["chart_metadata"] = CHART_2_METADATA
+    return chart_table
 
 
 def _build_demographic_row(row: pd.Series) -> dict[str, object]:

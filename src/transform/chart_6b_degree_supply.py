@@ -23,6 +23,14 @@ SEW_35_POPULATION_GROUP = "Persons"
 SEW_35_ROW_LABEL = "Total"
 SEW_DEGREE_SUPPLY_BASE_UNIT = "thousands of persons"
 SEW_DEGREE_SUPPLY_INDEX_FORMULA = "value / base_value * 100"
+CHART_6B_LABELS = {
+    "metrics": {
+        "bachelor_degree_or_above_count_index": {
+            "label": "Bachelor degree or above count index",
+            "unit": "index",
+        },
+    },
+}
 
 
 def build_chart_6b_table(sew_table_35_sheet: ABSPreparedSheet) -> pd.DataFrame:
@@ -40,16 +48,24 @@ def build_chart_6b_table(sew_table_35_sheet: ABSPreparedSheet) -> pd.DataFrame:
         prepared_rows.append(
             {
                 "year": int(row["_year"]),
-                "bachelor_degree_or_above_count_index": round(float(value) / base_value * 100, 1),
+                "bachelor_degree_or_above_count_index": round(
+                    float(value) / base_value * 100,
+                    1,
+                ),
                 "source_key": SEW_35_SOURCE_KEY,
             }
         )
 
     chart_table = pd.DataFrame(prepared_rows).sort_values("year", kind="mergesort")
     chart_table = select_chart_table_schema(chart_table, CHART_6B_TABLE_COLUMNS)
-    chart_table.attrs["chart_metadata"] = build_chart_6b_derivation_metadata(
-        sew_table_35_sheet,
-    )
+    chart_table.attrs["chart_metadata"] = {
+        "labels": CHART_6B_LABELS,
+        "details": {
+            "index_derivation": build_chart_6b_derivation_metadata(
+                sew_table_35_sheet,
+            ),
+        },
+    }
     return chart_table
 
 

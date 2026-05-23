@@ -19,6 +19,23 @@ from src.transform.constants import (
 from src.types import QILTPreparedSheet
 
 
+CHART_5_LABELS = {
+    "metrics": {
+        "fte_gain_pp": {
+            "label": "Full-time employment gain",
+            "unit": "percentage_point",
+        },
+        "underutilisation_reduction_pp": {
+            "label": "Underutilisation reduction",
+            "unit": "percentage_point",
+        },
+    },
+    "fit_metrics": {
+        CHART_5_WORK_FIT_METRIC_KEY: "Skills and education not fully utilised",
+    },
+}
+
+
 def build_chart_5_table(
     employment_sheet: QILTPreparedSheet,
     fit_sheet: QILTPreparedSheet,
@@ -51,22 +68,29 @@ def build_chart_5_table(
     ].sort_values("study_area", kind="mergesort")
     chart_table = select_chart_table_schema(chart_table, CHART_5_TABLE_COLUMNS)
     chart_table.attrs["chart_metadata"] = {
-        "fit_metric_key": CHART_5_WORK_FIT_METRIC_KEY,
-        "employment_source_key": GOS_L_6_SOURCE_KEY,
-        "fit_metric_source_key": GOS_L_26_SOURCE_KEY,
-        "fit_metric_direction": "lower_underutilisation_is_better",
-        "fit_change_formula": (
-            "short_term_underutilisation_pct - medium_term_underutilisation_pct"
-        ),
-        "fit_metric_source_columns": {
-            "short_term_underutilisation_pct": (
-                CHART_5_SHORT_TERM_UNDERUTILISATION_COLUMN
-            ),
-            "medium_term_underutilisation_pct": (
-                CHART_5_MEDIUM_TERM_UNDERUTILISATION_COLUMN
-            ),
+        "labels": CHART_5_LABELS,
+        "details": {
+            "fit_metric": {
+                "fit_metric_key": CHART_5_WORK_FIT_METRIC_KEY,
+                "employment_source_key": GOS_L_6_SOURCE_KEY,
+                "fit_metric_source_key": GOS_L_26_SOURCE_KEY,
+                "fit_metric_direction": "lower_underutilisation_is_better",
+                "fit_change_formula": (
+                    "short_term_underutilisation_pct - medium_term_underutilisation_pct"
+                ),
+                "fit_metric_source_columns": {
+                    "short_term_underutilisation_pct": (
+                        CHART_5_SHORT_TERM_UNDERUTILISATION_COLUMN
+                    ),
+                    "medium_term_underutilisation_pct": (
+                        CHART_5_MEDIUM_TERM_UNDERUTILISATION_COLUMN
+                    ),
+                },
+            },
         },
-        "excluded_rows": excluded_rows,
+        "caveats": {
+            "excluded_rows": excluded_rows,
+        },
     }
     return chart_table
 

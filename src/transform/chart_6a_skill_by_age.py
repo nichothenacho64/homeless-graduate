@@ -13,6 +13,18 @@ from src.transform.constants import (
 from src.types import ABSPreparedSheet, PreparedRows
 
 
+CHART_6A_METADATA = {
+    "labels": {
+        "metrics": {
+            "share_pct": {
+                "label": "Share",
+                "unit": "percent",
+            },
+        },
+    },
+}
+
+
 def build_chart_6a_table(sew_table_32_sheet: ABSPreparedSheet) -> pd.DataFrame:
     prepared_rows: PreparedRows = []
 
@@ -42,4 +54,6 @@ def build_chart_6a_table(sew_table_32_sheet: ABSPreparedSheet) -> pd.DataFrame:
         ["age_order", "skill_order"],
         kind="mergesort",
     )
-    return select_chart_table_schema(chart_table, CHART_6A_TABLE_COLUMNS)
+    chart_table = select_chart_table_schema(chart_table, CHART_6A_TABLE_COLUMNS)
+    chart_table.attrs["chart_metadata"] = CHART_6A_METADATA
+    return chart_table

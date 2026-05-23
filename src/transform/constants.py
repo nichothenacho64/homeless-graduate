@@ -239,13 +239,3 @@ SEW_DEGREE_SUPPLY_YEARS = tuple(range(2016, 2026))
 # Chart 7 — subgroup comparator
 CHART_7_GROUP_A_ROLE = "group_a"
 CHART_7_GROUP_B_ROLE = "group_b"
-
-
-# Export metadata constants
-CHART_METADATA_FILE_NAME = "chart_metadata.json"
-
-CHART_SOURCE_KEY_COLUMNS = (
-    "source_key",
-    "employment_source_key",
-    "fit_source_key",
-)

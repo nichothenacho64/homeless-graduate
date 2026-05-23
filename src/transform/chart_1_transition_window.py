@@ -13,8 +13,36 @@ from src.transform.constants import (
     CHART_1_TABLE_COLUMNS,
     GOS_21_SOURCE_KEY,
     GOS_L_1_SOURCE_KEY,
+    MEDIUM_TERM_TIME_WINDOW,
+    SHORT_TERM_TIME_WINDOW,
 )
 from src.types import PreparedRows, QILTPreparedSheet
+
+
+CHART_1_METADATA = {
+    "labels": {
+        "time_windows": {
+            SHORT_TERM_TIME_WINDOW: "Short term",
+            MEDIUM_TERM_TIME_WINDOW: "Medium term",
+        },
+        "series": {
+            CHART_1_GOS_L_SHORT_TERM_FTE_SERIES_KEY: "GOS-L short term",
+            CHART_1_GOS_L_MEDIUM_TERM_FTE_SERIES_KEY: "GOS-L medium term",
+            CHART_1_GOS_SHORT_TERM_FTE_SERIES_KEY: "GOS short term",
+        },
+        "metrics": {
+            "value_pct": {
+                "label": "Full-time employment",
+                "unit": "percent",
+            },
+        },
+    },
+    "details": {
+        "year_semantics": {
+            "display_year": "terminal_year_extracted_from_source_year_or_period_label",
+        },
+    },
+}
 
 
 def build_chart_1_table(
@@ -32,11 +60,7 @@ def build_chart_1_table(
         kind="mergesort",
     )
     chart_table = select_chart_table_schema(chart_table, CHART_1_TABLE_COLUMNS)
-    chart_table.attrs["chart_metadata"] = {
-        "year_semantics": {
-            "display_year": "terminal_year_extracted_from_source_year_or_period_label",
-        },
-    }
+    chart_table.attrs["chart_metadata"] = CHART_1_METADATA
     return chart_table
 
 

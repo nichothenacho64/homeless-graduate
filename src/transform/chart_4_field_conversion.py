@@ -12,6 +12,20 @@ from src.transform.constants import (
 from src.types import PreparedRows, QILTPreparedSheet
 
 
+CHART_4_LABELS = {
+    "metrics": {
+        "short_term_fte_pct": {
+            "label": "Short-term full-time employment",
+            "unit": "percent",
+        },
+        "medium_term_fte_pct": {
+            "label": "Medium-term full-time employment",
+            "unit": "percent",
+        },
+    },
+}
+
+
 def build_chart_4_table(gos_l_area_sheet: QILTPreparedSheet) -> pd.DataFrame:
     prepared_rows: PreparedRows = []
     excluded_rows: list[dict[str, object]] = []
@@ -41,6 +55,9 @@ def build_chart_4_table(gos_l_area_sheet: QILTPreparedSheet) -> pd.DataFrame:
     chart_table = chart_table.sort_values("study_area", kind="mergesort")
     chart_table = select_chart_table_schema(chart_table, CHART_4_TABLE_COLUMNS)
     chart_table.attrs["chart_metadata"] = {
-        "excluded_rows": excluded_rows,
+        "labels": CHART_4_LABELS,
+        "caveats": {
+            "excluded_rows": excluded_rows,
+        },
     }
     return chart_table

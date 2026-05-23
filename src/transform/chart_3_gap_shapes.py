@@ -21,6 +21,34 @@ from src.transform.qilt import (
 from src.types import PreparedRows, QILTPreparedSheet
 
 
+CHART_3_METADATA = {
+    "labels": {
+        "time_windows": {
+            SHORT_TERM_TIME_WINDOW: "Short term",
+            MEDIUM_TERM_TIME_WINDOW: "Medium term",
+        },
+        "metrics": {
+            "signed_gap_pp": {
+                "label": "Signed employment gap",
+                "unit": "percentage_point",
+            },
+            "reference_group_pct": {
+                "label": "Reference group full-time employment",
+                "unit": "percent",
+            },
+            "comparison_group_pct": {
+                "label": "Comparison group full-time employment",
+                "unit": "percent",
+            },
+        },
+    },
+    "details": {
+        "signed_gap_direction": "comparison_group_pct - reference_group_pct",
+        "reference_group_rule": "group_with_lower_short_term_full_time_employment",
+    },
+}
+
+
 def build_chart_3_table(
     gos_sheet: QILTPreparedSheet,
     gos_l_sheet: QILTPreparedSheet,
@@ -51,10 +79,7 @@ def build_chart_3_table(
         kind="mergesort",
     ).reset_index(drop=True)
     chart_table = select_chart_table_schema(chart_table, CHART_3_TABLE_COLUMNS)
-    chart_table.attrs["chart_metadata"] = {
-        "signed_gap_direction": "comparison_group_pct - reference_group_pct",
-        "reference_group_rule": "group_with_lower_short_term_full_time_employment",
-    }
+    chart_table.attrs["chart_metadata"] = CHART_3_METADATA
     return chart_table
 
 

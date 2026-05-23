@@ -27,6 +27,32 @@ from src.transform.qilt import (
 from src.types import PreparedRows, QILTPreparedSheet
 
 
+CHART_7_METADATA = {
+    "labels": {
+        "time_windows": {
+            SHORT_TERM_TIME_WINDOW: "Short term",
+            MEDIUM_TERM_TIME_WINDOW: "Medium term",
+        },
+        "metrics": {
+            "full_time_employment_pct": {
+                "label": "Full-time employment",
+                "unit": "percent",
+            },
+        },
+        "group_roles": {
+            CHART_7_GROUP_A_ROLE: "Group A",
+            CHART_7_GROUP_B_ROLE: "Group B",
+        },
+    },
+    "details": {
+        "group_role_semantics": {
+            CHART_7_GROUP_A_ROLE: "first_group_in_comparison_label",
+            CHART_7_GROUP_B_ROLE: "second_group_in_comparison_label",
+        },
+    },
+}
+
+
 def build_chart_7_table(
     gos_sheet: QILTPreparedSheet,
     gos_l_sheet: QILTPreparedSheet,
@@ -57,12 +83,7 @@ def build_chart_7_table(
         kind="mergesort",
     ).drop(columns="_group_role_order")
     chart_table = select_chart_table_schema(chart_table, CHART_7_TABLE_COLUMNS)
-    chart_table.attrs["chart_metadata"] = {
-        "group_role_semantics": {
-            "group_a": "first_group_in_comparison_label",
-            "group_b": "second_group_in_comparison_label",
-        },
-    }
+    chart_table.attrs["chart_metadata"] = CHART_7_METADATA
     return chart_table
 
 
