@@ -1,14 +1,16 @@
+import { loadChartData } from "../data.js";
+import {
+    getChartHeight,
+    renderChart,
+} from "../rendering.js";
 import {
     addDumbbellChartLegend,
     createAxisMarker,
     createHollowAxisMarker,
-    renderChart,
-    getChartHeight,
+    getGapLabelAnnotations,
     getYTickLabels,
     getYTickValues,
-    getGapLabelAnnotations,
-} from "../setup.js";
-import { loadChartData } from "../data.js";
+} from "../subgroup-chart-helpers.js";
 import {
     CHART_2_DIMENSIONS,
     CHART_AXES,
@@ -50,7 +52,6 @@ export async function renderChart2(chartId) {
 
     const layout = {
         title: { text: "Chart 2" },
-        // height: 
         height: getChartHeight(CHART_2_DIMENSIONS.baseHeight, chartData.length, CHART_2_DIMENSIONS.rowHeight),
         showlegend: true,
         xaxis: {

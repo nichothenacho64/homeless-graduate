@@ -9,14 +9,6 @@ export function transformValue(value) {
     return value;
 }
 
-export function formatPercentage(value) {
-    return Number.isFinite(value) ? `${value}%` : value;
-}
-
-export function unpack(data, key) {
-    return data.map(row => row[key]);
-}
-
 export function capitaliseWord(word) {
     return word.charAt(0).toUpperCase() + word.slice(1);
 }
@@ -28,4 +20,20 @@ export function createNumberList(value) {
         numberArray.push(i);
     }
     return numberArray;
+}
+
+export function getMean(values) {
+    return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
+export function getBestFitNumerator(points, xMean, yMean) {
+    return points.reduce((sum, point) => {
+        return sum + ((point.x - xMean) * (point.y - yMean));
+    }, 0);
+}
+
+export function getBestFitDenominator(points, xMean) {
+    return points.reduce((sum, point) => {
+        return sum + ((point.x - xMean) ** 2);
+    }, 0);
 }

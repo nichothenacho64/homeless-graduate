@@ -1,11 +1,10 @@
 import {
+    getAxisValues,
     getSeriesValue,
     getTrace,
-    getAxisValues,
-    renderChart,
-    buildPercentageHoverTemplate,
-} from "../setup.js";
-import { loadChartData } from "../data.js";
+    loadChartData,
+} from "../data.js";
+import { renderChart } from "../rendering.js";
 import {
     CHART_1_TRACE_COLOURS,
     CHART_AXES,
@@ -32,7 +31,9 @@ export async function renderChart1(chartId) {
             marker: {
                 color: CHART_1_TRACE_COLOURS[seriesOrder],
             },
-            hovertemplate: buildPercentageHoverTemplate(CHART_AXES.chart1XAxis, "Full-time employment"),
+            hovertemplate: `${CHART_AXES.chart1XAxis}: %{x}<br>` +
+                `${CHART_AXES.chart1YAxis}: %{y}%` +
+                `<extra></extra>`,
             hoverlabel: {
                 font: { color: "#FFF" },
                 bordercolor: CHART_1_TRACE_COLOURS[seriesOrder],
@@ -45,14 +46,13 @@ export async function renderChart1(chartId) {
 
     const layout = {
         title: { text: "Chart 1" },
-        showlegend: true, // false by default
         xaxis: {
             title: { text: CHART_AXES.chart1XAxis },
             showgrid: false,
             dtick: 1, // the increment step
         },
         yaxis: {
-            title: { text: CHART_AXES.chart1YAxis },
+            title: { text: CHART_AXES.chart1YAxis + " (%)" },
             showline: false,
             range: [69, 96]
         },

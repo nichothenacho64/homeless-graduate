@@ -21,17 +21,29 @@ export const CHART_6B_ID = "chart_6b_degree_supply";
 export const CHART_7_ID = "chart_7_subgroup_comparator";
 export const CHART_METADATA_ID = "chart_metadata";
 
+export const GLOBAL_TRACES = {
+    hoverlabel: {
+        align: "left",
+        font: { size: 11 }
+    },
+    marker: {
+        line: {
+            width: 1.5
+        }
+    }
+};
+
+export const GLOBAL_LAYOUT = {
+    paper_bgcolor: TRANSPARENT_BACKGROUND,
+    plot_bgcolor: TRANSPARENT_BACKGROUND
+};
+
 export const GLOBAL_CONFIG = {
     responsive: true,
     displayModeBar: "hover",
     displaylogo: false,
     modeBarButtonsToRemove: REMOVED_MODE_BAR_BUTTONS,
     toImageButtonOptions: TO_IMAGE_BUTTON_OPTIONS
-};
-
-export const GLOBAL_LAYOUT = {
-    paper_bgcolor: TRANSPARENT_BACKGROUND,
-    plot_bgcolor: TRANSPARENT_BACKGROUND
 };
 
 export const THEME_COLOURS = {
@@ -66,12 +78,26 @@ export const CHART_3_DIMENSIONS = {
 
 export const CHART_AXES = {
     chart1XAxis: "Graduation year",
-    chart1YAxis: "Full-time employment (%)",
+    chart1YAxis: "Full-time employment",
     chart2XAxis: "2024 short-term full-time employment (%)",
     chart3XAxis: "Signed full-time employment gap (percentage points)",
+    chart4XAxis: "Short-term full-time employment",
+    chart4YAxis: "Medium-term full-time employment"
 };
 
 export const DUMBBELL_LINE = {
     width: 2.5,
     color: "rgb(160, 160, 160)"
+};
+
+export const BEST_FIT_LINE = {
+    color: THEME_COLOURS.textColour,
+    width: 2,
+    dash: "dash"
+};
+
+export const FIELD_CONVERSION_GAINS = {
+    high: 25,
+    medium: 15,
+    low: 8,
 };

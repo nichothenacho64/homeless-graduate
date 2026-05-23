@@ -1,15 +1,19 @@
 import {
+    getTrace,
+    getTraceRow,
+    loadChartData,
+} from "../data.js";
+import {
+    createZeroLine,
+    getChartHeight,
+    renderChart,
+} from "../rendering.js";
+import {
     addDumbbellChartLegend,
     createGapMarker,
     getGapShapeYTickLabels,
-    getTrace,
-    getTraceRow,
     getYTickValues,
-    getChartHeight,
-    renderChart,
-    createZeroLine
-} from "../setup.js";
-import { loadChartData } from "../data.js";
+} from "../subgroup-chart-helpers.js";
 import {
     CHART_3_DIMENSIONS,
     CHART_AXES,

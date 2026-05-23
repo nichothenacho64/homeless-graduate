@@ -24,3 +24,47 @@ function transformChartData(chartData) {
 
     return transformedChartData;
 }
+
+export function getChartPoints(chartData, xKey, yKey) {
+    return chartData.map((row) => ({ x: row[xKey], y: row[yKey] }));
+}
+
+export function getTrace(rows, traceKey, targetTraceOrderValue) {
+    const trace = [];
+
+    for (let row of rows) {
+        const traceOrderValue = row[traceKey];
+        if (traceOrderValue === targetTraceOrderValue) {
+            trace.push(row);
+        }
+    }
+
+    return trace;
+}
+
+export function getTraceRow(rows, traceKey, targetTraceOrderValue) {
+    for (let row of rows) {
+        const traceOrderValue = row[traceKey];
+        if (traceOrderValue === targetTraceOrderValue) {
+            return row;
+        }
+    }
+}
+
+export function getAxisValues(chartData, axisKey) {
+    const axisValues = [];
+
+    for (let row of chartData) {
+        const axisValue = row[axisKey];
+        axisValues.push(axisValue);
+    }
+
+    return axisValues;
+}
+
+export function getSeriesValue(chartData, seriesKeyLabel, metadataLabels) {
+    const seriesKey = chartData[0][seriesKeyLabel];
+    const seriesValue = metadataLabels[seriesKey];
+
+    return seriesValue;
+}
