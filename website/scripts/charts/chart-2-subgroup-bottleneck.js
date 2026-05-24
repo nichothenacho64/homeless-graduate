@@ -1,16 +1,14 @@
 import { loadChartData } from "../data.js";
-import {
-    getChartHeight,
-    renderChart,
-} from "../rendering.js";
+import { renderChart } from "../rendering.js";
 import {
     addDumbbellChartLegend,
     createAxisMarker,
     createHollowAxisMarker,
+    getChartHeight,
     getGapLabelAnnotations,
     getYTickLabels,
     getYTickValues,
-} from "../subgroup-chart-helpers.js";
+} from "../chart-helpers.js";
 import {
     CHART_2_DIMENSIONS,
     CHART_AXES,

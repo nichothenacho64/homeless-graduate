@@ -1,6 +1,10 @@
-import { BEST_FIT_LINE } from "../config.js";
-import { getAxisValues, loadChartData } from "../data.js";
-import { createBestFitLineTrace, getFieldConversionColour, getFieldConversionOpacity, renderChart } from "../rendering.js";
+import { loadChartData } from "../data.js";
+import {
+    createChart4GainLegend,
+    createEqualityLineTrace,
+    getFieldConversionColour,
+} from "../chart-helpers.js";
+import { renderChart } from "../rendering.js";
 
 export async function renderChart4(chartId) {
     const { chartData, chartMetadata } = await loadChartData(chartId);
@@ -13,10 +17,15 @@ export async function renderChart4(chartId) {
     const yLabel = metadataMetricLabels[yKey].label;
 
     const data = [];
-    const bestFitLineTrace = createBestFitLineTrace(chartData, xKey, yKey);
+    const equalityLineTrace = createEqualityLineTrace(50, 100);
+    const gainLegendTraces = createChart4GainLegend();
+    
+    equalityLineTrace.showlegend = false;
+    
+    data.push(equalityLineTrace);
 
-    if (bestFitLineTrace) {
-        data.push(bestFitLineTrace);
+    for (let gainLegendTrace of gainLegendTraces) {
+        data.push(gainLegendTrace);
     }
 
     for (let row of chartData) {
@@ -29,9 +38,9 @@ export async function renderChart4(chartId) {
             name: row["study_area"],
             mode: "markers",
             type: "scatter",
+            showlegend: false,
             marker: {
                 size: 8,
-                opacity: getFieldConversionOpacity(row),
                 color: getFieldConversionColour(row),
             },
             hovertemplate: `<b>%{fullData.name}</b><br>` +
@@ -49,14 +58,18 @@ export async function renderChart4(chartId) {
 
     const layout = {
         title: { text: "Chart 4" },
-        showlegend: false, // true by default
+        showlegend: true,
+        legend: {
+            title: { text: "Medium-term gain over short-term FTE" },
+            traceorder: "normal"
+        },
         xaxis: {
             title: { text: xLabel + " (%)" },
-            range: [50, 101]
+            range: [55, 100],
         },
         yaxis: {
             title: { text: yLabel + " (%)" },
-            range: [50, 101]
+            range: [55, 100],
         },
     };
 

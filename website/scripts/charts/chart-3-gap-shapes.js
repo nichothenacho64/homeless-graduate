@@ -3,17 +3,15 @@ import {
     getTraceRow,
     loadChartData,
 } from "../data.js";
-import {
-    createZeroLine,
-    getChartHeight,
-    renderChart,
-} from "../rendering.js";
+import { renderChart } from "../rendering.js";
 import {
     addDumbbellChartLegend,
     createGapMarker,
+    createZeroLine,
+    getChartHeight,
     getGapShapeYTickLabels,
     getYTickValues,
-} from "../subgroup-chart-helpers.js";
+} from "../chart-helpers.js";
 import {
     CHART_3_DIMENSIONS,
     CHART_AXES,

@@ -90,13 +90,13 @@ export const DUMBBELL_LINE = {
     color: "rgb(160, 160, 160)"
 };
 
-export const BEST_FIT_LINE = {
+export const DIAGONAL_LINE = {
     color: THEME_COLOURS.textColour,
     width: 2,
     dash: "dash"
 };
 
-export const FIELD_CONVERSION_GAINS = {
+export const CHART_4_GAINS = {
     high: 25,
     medium: 15,
     low: 8,
