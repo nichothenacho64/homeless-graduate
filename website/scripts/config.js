@@ -53,8 +53,14 @@ export const THEME_COLOURS = {
     blue500: "#5E88A8",
     amber300: "#E7C48B",
     blue300: "#AFC6D8",
+    grey500: "#a0a0a0",
     textColour: "#1F2328",
     backgroundColour: "#FFFDF9"
+};
+
+export const UNITS_TO_LABELS = {
+    "percentage_point": " (pp)",
+    "percent": " (%)"
 };
 
 export const CHART_1_TRACE_COLOURS = [THEME_COLOURS.amber500, THEME_COLOURS.blue500, THEME_COLOURS.amber700];
@@ -81,13 +87,11 @@ export const CHART_AXES = {
     chart1YAxis: "Full-time employment",
     chart2XAxis: "2024 short-term full-time employment (%)",
     chart3XAxis: "Signed full-time employment gap (percentage points)",
-    chart4XAxis: "Short-term full-time employment",
-    chart4YAxis: "Medium-term full-time employment"
 };
 
 export const DUMBBELL_LINE = {
     width: 2.5,
-    color: "rgb(160, 160, 160)"
+    color: THEME_COLOURS.grey500
 };
 
 export const DIAGONAL_LINE = {

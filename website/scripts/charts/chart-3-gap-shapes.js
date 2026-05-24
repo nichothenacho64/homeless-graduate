@@ -3,11 +3,13 @@ import {
     getTraceRow,
     loadChartData,
 } from "../data.js";
-import { renderChart } from "../rendering.js";
+import {
+    createReferenceLine,
+    renderChart,
+} from "../rendering.js";
 import {
     addDumbbellChartLegend,
     createGapMarker,
-    createZeroLine,
     getChartHeight,
     getGapShapeYTickLabels,
     getYTickValues,
@@ -71,7 +73,7 @@ export async function renderChart3(chartId) {
             tickvals: getYTickValues(shortTermRows),
             ticktext: getGapShapeYTickLabels(shortTermRows)
         },
-        shapes: [createZeroLine(THEME_COLOURS.textColour, 1)],
+        shapes: [createReferenceLine("x", 0, THEME_COLOURS.textColour, 1)],
         margin: {
             l: CHART_3_DIMENSIONS.leftMargin,
             r: CHART_3_DIMENSIONS.rightMargin,

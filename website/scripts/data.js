@@ -1,4 +1,4 @@
-import { DATA_DIR, CHART_METADATA_ID } from "./config.js";
+import { DATA_DIR, CHART_METADATA_ID, UNITS_TO_LABELS } from "./config.js";
 import { transformValue } from "./utils.js";
 
 export async function loadChartData(chartId) {
@@ -49,6 +49,19 @@ export function getTraceRow(rows, traceKey, targetTraceOrderValue) {
             return row;
         }
     }
+}
+
+export function getAxisLabel(chartMetadata, key, useUnit = false) {
+    const metadataMetricLabels = chartMetadata.labels.metrics;
+    const axisLabel = metadataMetricLabels[key].label;
+
+    if (!useUnit) {
+        return axisLabel;
+    }
+
+    const axisUnit = metadataMetricLabels[key].unit;
+
+    return axisLabel + UNITS_TO_LABELS[axisUnit];
 }
 
 export function getAxisValues(chartData, axisKey) {

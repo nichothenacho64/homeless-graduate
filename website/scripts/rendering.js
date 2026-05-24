@@ -81,6 +81,25 @@ export function getChartElementId(chartId) {
     return chartElementId;
 }
 
+export function createReferenceLine(axis, value, lineColour, lineWidth) {
+    const isXAxis = axis === "x";
+
+    return {
+        type: "line",
+        layer: "below",
+        x0: isXAxis ? value : 0,
+        x1: isXAxis ? value : 1,
+        y0: isXAxis ? 0 : value,
+        y1: isXAxis ? 1 : value,
+        xref: isXAxis ? "x" : "paper",
+        yref: isXAxis ? "paper" : "y",
+        line: {
+            color: lineColour,
+            width: lineWidth
+        }
+    };
+}
+
 export function renderChart(chartId, data, layout) {
     const chartElementId = getChartElementId(chartId);
     const renderedData = addGlobalTraceDefaults(data);

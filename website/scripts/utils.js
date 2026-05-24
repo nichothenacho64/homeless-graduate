@@ -13,17 +13,36 @@ export function capitaliseWord(word) {
     return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
-export function createNumberList(value) {
-    let numberArray = [];
-    
-    for (let i = 1; i <= value; i++) {
-        numberArray.push(i);
+function createNumberArray(values) {
+    const numericValues = [];
+
+    for (let value of values) {
+        const numericValue = Number(value);
+
+        if (Number.isFinite(numericValue)) {
+            numericValues.push(numericValue);
+        }
     }
-    return numberArray;
+
+    return numericValues;
 }
 
-export function getMean(values) {
+export function calculateMean(values) {
     return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
+export function calculateMedian(values) {
+    const numericValues = createNumberArray(values);
+
+    numericValues.sort((a, b) => a - b);
+
+    const middleIndex = Math.floor(numericValues.length / 2);
+
+    if (numericValues.length % 2 === 1) {
+        return numericValues[middleIndex];
+    }
+
+    return (numericValues[middleIndex - 1] + numericValues[middleIndex]) / 2;
 }
 
 export function getBestFitNumerator(points, xMean, yMean) {

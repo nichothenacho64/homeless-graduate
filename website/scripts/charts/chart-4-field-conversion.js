@@ -1,25 +1,30 @@
-import { loadChartData } from "../data.js";
+import { CHART_4_GAINS } from "../config.js";
+import {
+    getAxisLabel,
+    loadChartData,
+} from "../data.js";
 import {
     createChart4GainLegend,
     createEqualityLineTrace,
     getFieldConversionColour,
 } from "../chart-helpers.js";
-import { renderChart } from "../rendering.js";
+import {
+    renderChart,
+} from "../rendering.js";
 
 export async function renderChart4(chartId) {
     const { chartData, chartMetadata } = await loadChartData(chartId);
-    const metadataMetricLabels = chartMetadata.labels.metrics;
 
     const xKey = "short_term_fte_pct";
     const yKey = "medium_term_fte_pct";
 
-    const xLabel = metadataMetricLabels[xKey].label;
-    const yLabel = metadataMetricLabels[yKey].label;
+    const xLabel = getAxisLabel(chartMetadata, xKey);
+    const yLabel = getAxisLabel(chartMetadata, yKey);
 
     const data = [];
     const equalityLineTrace = createEqualityLineTrace(50, 100);
-    const gainLegendTraces = createChart4GainLegend();
-    
+    const gainLegendTraces = createChart4GainLegend(CHART_4_GAINS);
+
     equalityLineTrace.showlegend = false;
     
     data.push(equalityLineTrace);
@@ -29,8 +34,7 @@ export async function renderChart4(chartId) {
     }
 
     for (let row of chartData) {
-        console.log(row);
-        const employmentGain = row["medium_term_fte_pct"] - row["short_term_fte_pct"];
+        const employmentGain = row[xKey] - row[yKey];
 
         const trace = {
             x: [row[xKey]],
@@ -41,7 +45,7 @@ export async function renderChart4(chartId) {
             showlegend: false,
             marker: {
                 size: 8,
-                color: getFieldConversionColour(row),
+                color: getFieldConversionColour(row, CHART_4_GAINS),
             },
             hovertemplate: `<b>%{fullData.name}</b><br>` +
                 `${xLabel}: %{x}%<br>` +
@@ -64,11 +68,11 @@ export async function renderChart4(chartId) {
             traceorder: "normal"
         },
         xaxis: {
-            title: { text: xLabel + " (%)" },
+            title: { text: getAxisLabel(chartMetadata, xKey, true) },
             range: [55, 100],
         },
         yaxis: {
-            title: { text: yLabel + " (%)" },
+            title: { text: getAxisLabel(chartMetadata, xKey, true) },
             range: [55, 100],
         },
     };

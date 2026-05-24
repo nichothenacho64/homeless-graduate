@@ -1,10 +1,9 @@
 import {
-    CHART_4_GAINS,
     DIAGONAL_LINE,
     THEME_COLOURS
 } from "./config.js";
 import { getAxisValues, getChartPoints } from "./data.js";
-import { getMean, getBestFitNumerator, getBestFitDenominator } from "./utils.js";
+import { calculateMean, getBestFitNumerator, getBestFitDenominator } from "./utils.js";
 
 export function createAxisMarker(row, traceNumber, groupColumn, colour) {
     const group = row[groupColumn];
@@ -132,23 +131,6 @@ export function getGapLabelAnnotations(chartData) {
     return gapLabelAnnotations;
 }
 
-export function createZeroLine(lineColour, lineWidth) {
-    return {
-        type: "line",
-        layer: "below",
-        x0: 0,
-        x1: 0,
-        y0: 0,
-        y1: 1,
-        xref: "x",
-        yref: "paper",
-        line: {
-            color: lineColour,
-            width: lineWidth
-        }
-    };
-}
-
 export function createEqualityLineTrace(xStart, xEnd) {
     return {
         x: [xStart, xEnd],
@@ -166,8 +148,8 @@ export function createBestFitLineTrace(chartData, xKey, yKey) {
     const yValues = getAxisValues(chartData, yKey);
     const chartPoints = getChartPoints(chartData, xKey, yKey);
 
-    const xMean = getMean(xValues);
-    const yMean = getMean(yValues);
+    const xMean = calculateMean(xValues);
+    const yMean = calculateMean(yValues);
 
     const slopeNumerator = getBestFitNumerator(chartPoints, xMean, yMean);
     const slopeDenominator = getBestFitDenominator(chartPoints, xMean);
@@ -191,64 +173,85 @@ export function createBestFitLineTrace(chartData, xKey, yKey) {
     };
 }
 
-export function getFieldConversionColour(row) {
+export function getFieldConversionColour(row, gainValues) {
     const gain = row["medium_term_fte_pct"] - row["short_term_fte_pct"];
 
-    if (gain >= CHART_4_GAINS.high) {
+    if (gain >= gainValues.high) {
         return THEME_COLOURS.amber700;
     }
 
-    if (gain >= CHART_4_GAINS.medium) {
+    if (gain >= gainValues.medium) {
         return THEME_COLOURS.amber500;
     }
 
-    if (gain >= CHART_4_GAINS.low) {
+    if (gain >= gainValues.low) {
         return THEME_COLOURS.blue500;
     }
 
     return THEME_COLOURS.blue700;
 }
 
-export function getFieldConversionOpacity(row) {
-    const gain = row["medium_term_fte_pct"] - row["short_term_fte_pct"];
+export function getWorkFitColour(row, quadrantValues) {
+    const highEmploymentGain = row["fte_gain_pp"] >= quadrantValues.highEmploymentGain;
+    const highWorkFitImprovement = row["underutilisation_reduction_pp"] >= quadrantValues.highWorkFitImprovement;
 
-    if (gain >= CHART_4_GAINS.high) {
-        return 1;
-    }
-
-    return 0.2;
+    if (highEmploymentGain && !highWorkFitImprovement) {
+        return THEME_COLOURS.amber700;
+    } else if (highEmploymentGain && highWorkFitImprovement) {
+        return THEME_COLOURS.blue700;
+    } else if (!highEmploymentGain && highWorkFitImprovement) {
+        return THEME_COLOURS.blue500;
+    } 
+    
+    return THEME_COLOURS.grey500;
 }
 
 export function getChartHeight(baseHeight, numRows, rowHeight) {
     return baseHeight + (numRows * rowHeight);
 }
 
-export function createChart4GainLegendTrace(name, gainPp) {
+export function createChart4GainLegendTrace(gainTrace) {
     const legendRow = {
         short_term_fte_pct: 0,
-        medium_term_fte_pct: gainPp
+        medium_term_fte_pct: gainTrace.gainPp
     };
 
     return {
         x: [null],
         y: [null],
-        name,
+        name: gainTrace.name,
         mode: "markers",
         type: "scatter",
         marker: {
             size: 8,
-            color: getFieldConversionColour(legendRow)
+            color: getFieldConversionColour(legendRow, gainTrace.thresholds)
         },
         hoverinfo: "skip",
         showlegend: true
     };
 }
 
-export function createChart4GainLegend() {
-    const gain4Trace = createChart4GainLegendTrace(`${CHART_4_GAINS.high}+ pp`, CHART_4_GAINS.high);
-    const gain3Trace = createChart4GainLegendTrace(`${CHART_4_GAINS.medium}-${CHART_4_GAINS.high - 1} pp`, CHART_4_GAINS.medium);
-    const gain2Trace = createChart4GainLegendTrace(`${CHART_4_GAINS.low}-${CHART_4_GAINS.medium - 1} pp`, CHART_4_GAINS.low);
-    const gain1Trace = createChart4GainLegendTrace(`<${CHART_4_GAINS.low} pp`, CHART_4_GAINS.low - 1);
+export function createChart4GainLegend(gainValues) {
+    const gain4Trace = createChart4GainLegendTrace({
+        name: `${gainValues.high}+ pp`,
+        gainPp: gainValues.high,
+        thresholds: gainValues
+    });
+    const gain3Trace = createChart4GainLegendTrace({
+        name: `${gainValues.medium}-${gainValues.high - 1} pp`,
+        gainPp: gainValues.medium,
+        thresholds: gainValues
+    });
+    const gain2Trace = createChart4GainLegendTrace({
+        name: `${gainValues.low}-${gainValues.medium - 1} pp`,
+        gainPp: gainValues.low,
+        thresholds: gainValues
+    });
+    const gain1Trace = createChart4GainLegendTrace({
+        name: `<${gainValues.low} pp`,
+        gainPp: gainValues.low - 1,
+        thresholds: gainValues
+    });
 
     return [gain4Trace, gain3Trace, gain2Trace, gain1Trace];
 }
