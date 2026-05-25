@@ -4,7 +4,8 @@ import {
     renderChart3, 
     renderChart4, 
     renderChart5, 
-    renderChart6a 
+    renderChart6a,
+    renderChart6b
 } from "./charts/index.js";
 import {
     CHART_1_ID,
@@ -12,7 +13,8 @@ import {
     CHART_3_ID,
     CHART_4_ID,
     CHART_5_ID,
-    CHART_6A_ID
+    CHART_6A_ID,
+    CHART_6B_ID
 } from "./config.js";
 
 await renderChart1(CHART_1_ID);
@@ -21,3 +23,4 @@ await renderChart3(CHART_3_ID);
 await renderChart4(CHART_4_ID);
 await renderChart5(CHART_5_ID);
 await renderChart6a(CHART_6A_ID);
+await renderChart6b(CHART_6B_ID);

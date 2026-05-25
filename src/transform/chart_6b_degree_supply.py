@@ -22,12 +22,12 @@ SEW_35_SUBJECT = f"People with a {SEW_35_QUALIFICATION_FILTER}"
 SEW_35_POPULATION_GROUP = "Persons"
 SEW_35_ROW_LABEL = "Total"
 SEW_DEGREE_SUPPLY_BASE_UNIT = "thousands of persons"
-SEW_DEGREE_SUPPLY_INDEX_FORMULA = "value / base_value * 100"
+SEW_DEGREE_SUPPLY_INCREASE_FORMULA = "(value - base_value) / base_value * 100"
 CHART_6B_LABELS = {
     "metrics": {
-        "bachelor_degree_or_above_count_index": {
-            "label": "Bachelor degree or above count index",
-            "unit": "index",
+        "bachelor_degree_or_above_holders_increase_pct": {
+            "label": "Increase in bachelor-degree-or-above holders since 2016",
+            "unit": "percent",
         },
     },
 }
@@ -48,8 +48,8 @@ def build_chart_6b_table(sew_table_35_sheet: ABSPreparedSheet) -> pd.DataFrame:
         prepared_rows.append(
             {
                 "year": int(row["_year"]),
-                "bachelor_degree_or_above_count_index": round(
-                    float(value) / base_value * 100,
+                "bachelor_degree_or_above_holders_increase_pct": round(
+                    (float(value) - base_value) / base_value * 100,
                     1,
                 ),
                 "source_key": SEW_35_SOURCE_KEY,
@@ -61,7 +61,7 @@ def build_chart_6b_table(sew_table_35_sheet: ABSPreparedSheet) -> pd.DataFrame:
     chart_table.attrs["chart_metadata"] = {
         "labels": CHART_6B_LABELS,
         "details": {
-            "index_derivation": build_chart_6b_derivation_metadata(
+            "increase_derivation": build_chart_6b_derivation_metadata(
                 sew_table_35_sheet,
             ),
         },
@@ -84,7 +84,7 @@ def build_chart_6b_derivation_metadata(
         "selected_population_group": SEW_35_POPULATION_GROUP,
         "selected_row_label": SEW_35_ROW_LABEL,
         "qualification_filter": SEW_35_QUALIFICATION_FILTER,
-        "formula": SEW_DEGREE_SUPPLY_INDEX_FORMULA,
+        "formula": SEW_DEGREE_SUPPLY_INCREASE_FORMULA,
     }
 
 

@@ -84,7 +84,7 @@ CHART_TABLE_SCHEMAS = {
     ],
     CHART_6B_ID: [
         "year",
-        "bachelor_degree_or_above_count_index",
+        "bachelor_degree_or_above_holders_increase_pct",
         "source_key",
     ],
     CHART_7_ID: [
