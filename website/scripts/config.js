@@ -2,24 +2,24 @@ export const DATA_DIR = "../data/processed/";
 
 
 // chart IDs
-export const CHART_1_ID = "chart_1_transition_window";
-export const CHART_2_ID = "chart_2_subgroup_bottleneck";
-export const CHART_3_ID = "chart_3_gap_shapes";
-export const CHART_4_ID = "chart_4_field_conversion";
-export const CHART_5_ID = "chart_5_work_fit";
-export const CHART_6A_ID = "chart_6a_skill_by_age";
-export const CHART_6B_ID = "chart_6b_degree_supply";
+export const CHART_1A_ID = "chart_1a_degree_supply";
+export const CHART_1B_ID = "chart_1b_skill_by_age";
+export const CHART_2_ID = "chart_2_transition_window";
+export const CHART_3_ID = "chart_3_subgroup_bottleneck";
+export const CHART_4_ID = "chart_4_gap_shapes";
+export const CHART_5_ID = "chart_5_field_conversion";
+export const CHART_6_ID = "chart_6_work_fit";
 export const CHART_7_ID = "chart_7_subgroup_comparator";
 export const CHART_METADATA_ID = "chart_metadata";
 
 export const CHART_TITLES = {
-    chart1: "The first year is the weak point",
-    chart2: "The bottleneck is uneven",
-    chart3: "Not every gap closes",
-    chart4: "Some fields convert later",
-    chart5: "A job is not always a fit",
-    chart6a: "High-skill work is age-sorted",
-    chart6b: "Degrees are becoming more common"
+    chart1a: "Degrees are becoming more common",
+    chart1b: "High-skill work is age-sorted",
+    chart2: "The first year is the weak point",
+    chart3: "The bottleneck is uneven",
+    chart4: "Not every gap closes",
+    chart5: "Some fields convert later",
+    chart6: "A job is not always a fit"
 };
 
 
@@ -86,10 +86,10 @@ export const UNITS_TO_LABELS = {
 };
 
 export const CHART_AXES = {
-    chart1XAxis: "Graduation year",
-    chart1YAxis: "Full-time employment",
-    chart2XAxis: "2024 short-term full-time employment (%)",
-    chart3XAxis: "Signed full-time employment gap (percentage points)",
+    chart2XAxis: "Graduation year",
+    chart2YAxis: "Full-time employment",
+    chart3XAxis: "2024 short-term full-time employment (%)",
+    chart4XAxis: "Signed full-time employment gap (percentage points)",
 };
 
 
@@ -111,26 +111,26 @@ export const DIAGONAL_LINE = {
 };
 
 
-// chart 1
-export const CHART_1_TRACE_COLOURS = [
+// chart 2
+export const CHART_2_TRACE_COLOURS = [
     THEME_COLOURS.amber500, 
     THEME_COLOURS.blue500, 
     THEME_COLOURS.amber700
 ];
 
 
-// chart 2 and chart 3
+// chart 3 and chart 4
 const DUMBBELL_BASE_HEIGHT = 60;
 const DUMBBELL_ROW_HEIGHT = 60;
 
-export const CHART_2_DIMENSIONS = {
+export const CHART_3_DIMENSIONS = {
     baseHeight: DUMBBELL_BASE_HEIGHT,
     rowHeight: DUMBBELL_ROW_HEIGHT,
     leftMargin: 220,
     rightMargin: 150,
 };
 
-export const CHART_3_DIMENSIONS = {
+export const CHART_4_DIMENSIONS = {
     baseHeight: DUMBBELL_BASE_HEIGHT,
     rowHeight: DUMBBELL_ROW_HEIGHT,
     leftMargin: 280,
@@ -138,16 +138,16 @@ export const CHART_3_DIMENSIONS = {
 };
 
 
-// chart 4
-export const CHART_4_GAIN_VALUES = {
+// chart 5
+export const CHART_5_GAIN_VALUES = {
     high: 25,
     medium: 15,
     low: 8,
 };
 
 
-// chart 6a
-export const CHART_6A_TRACE_COLOURS = [
+// chart 1b
+export const CHART_1B_TRACE_COLOURS = [
     THEME_COLOURS.blue700,
     THEME_COLOURS.blue500,
     THEME_COLOURS.blue300,

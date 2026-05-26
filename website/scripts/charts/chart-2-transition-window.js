@@ -6,14 +6,14 @@ import {
 } from "../data.js";
 import { renderChart } from "../rendering.js";
 import {
-    CHART_1_TRACE_COLOURS,
+    CHART_2_TRACE_COLOURS,
     CHART_AXES,
     CHART_TITLES,
 } from "../config.js";
 
-// chart 1: gradually built up from basic examples featured here: https://plotly.com/javascript/line-charts/
+// chart 2: gradually built up from basic examples featured here: https://plotly.com/javascript/line-charts/
 
-export async function renderChart1(chartId) {
+export async function renderChart2(chartId) {
     const { chartData, chartMetadata } = await loadChartData(chartId);
     const metadataSeriesLabels = chartMetadata.labels.series;
 
@@ -30,10 +30,10 @@ export async function renderChart1(chartId) {
             type: "scatter",
             mode: "lines+markers",
             marker: {
-                color: CHART_1_TRACE_COLOURS[seriesOrder],
+                color: CHART_2_TRACE_COLOURS[seriesOrder],
             },
-            hovertemplate: `${CHART_AXES.chart1XAxis}: %{x}<br>` +
-                `${CHART_AXES.chart1YAxis}: %{y}%` +
+            hovertemplate: `${CHART_AXES.chart2XAxis}: %{x}<br>` +
+                `${CHART_AXES.chart2YAxis}: %{y}%` +
                 `<extra></extra>`
         };
 
@@ -41,14 +41,14 @@ export async function renderChart1(chartId) {
     }
 
     const layout = {
-        title: { text: CHART_TITLES.chart1 },
+        title: { text: CHART_TITLES.chart2 },
         xaxis: {
-            title: { text: CHART_AXES.chart1XAxis },
+            title: { text: CHART_AXES.chart2XAxis },
             showgrid: false,
             dtick: 1, // the increment step
         },
         yaxis: {
-            title: { text: CHART_AXES.chart1YAxis + " (%)" },
+            title: { text: CHART_AXES.chart2YAxis + " (%)" },
             showline: false,
             range: [69, 96]
         },

@@ -6,7 +6,8 @@ from src.preparation.abs import clean_abs_display_text, parse_abs_number
 from src.preparation.series import is_missing_value
 from src.transform.chart_helpers import select_chart_table_schema
 from src.transform.constants import (
-    CHART_6B_TABLE_COLUMNS,
+    CHART_1A_METADATA,
+    CHART_1A_TABLE_COLUMNS,
     SEW_35_SOURCE_KEY,
     SEW_DEGREE_SUPPLY_BASE_YEAR,
     SEW_DEGREE_SUPPLY_YEARS,
@@ -23,17 +24,9 @@ SEW_35_POPULATION_GROUP = "Persons"
 SEW_35_ROW_LABEL = "Total"
 SEW_DEGREE_SUPPLY_BASE_UNIT = "thousands of persons"
 SEW_DEGREE_SUPPLY_INCREASE_FORMULA = "(value - base_value) / base_value * 100"
-CHART_6B_LABELS = {
-    "metrics": {
-        "bachelor_degree_or_above_holders_increase_pct": {
-            "label": "Increase in bachelor-degree-or-above holders since 2016",
-            "unit": "percent",
-        },
-    },
-}
 
 
-def build_chart_6b_table(sew_table_35_sheet: ABSPreparedSheet) -> pd.DataFrame:
+def build_chart_1a_table(sew_table_35_sheet: ABSPreparedSheet) -> pd.DataFrame:
     _require_sew_table_35(sew_table_35_sheet)
     source_rows = _select_degree_supply_source_rows(sew_table_35_sheet.table)
     base_value = _select_base_value(source_rows)
@@ -57,11 +50,11 @@ def build_chart_6b_table(sew_table_35_sheet: ABSPreparedSheet) -> pd.DataFrame:
         )
 
     chart_table = pd.DataFrame(prepared_rows).sort_values("year", kind="mergesort")
-    chart_table = select_chart_table_schema(chart_table, CHART_6B_TABLE_COLUMNS)
+    chart_table = select_chart_table_schema(chart_table, CHART_1A_TABLE_COLUMNS)
     chart_table.attrs["chart_metadata"] = {
-        "labels": CHART_6B_LABELS,
+        **CHART_1A_METADATA,
         "details": {
-            "increase_derivation": build_chart_6b_derivation_metadata(
+            "increase_derivation": build_chart_1a_derivation_metadata(
                 sew_table_35_sheet,
             ),
         },
@@ -69,7 +62,7 @@ def build_chart_6b_table(sew_table_35_sheet: ABSPreparedSheet) -> pd.DataFrame:
     return chart_table
 
 
-def build_chart_6b_derivation_metadata(
+def build_chart_1a_derivation_metadata(
     sew_table_35_sheet: ABSPreparedSheet,
 ) -> ChartMetadata:
     _require_sew_table_35(sew_table_35_sheet)
@@ -90,7 +83,7 @@ def build_chart_6b_derivation_metadata(
 
 def _require_sew_table_35(sew_table_35_sheet: ABSPreparedSheet) -> None:
     if sew_table_35_sheet.table_number != SEW_35_TABLE_NUMBER:
-        raise ValueError("Chart 6B requires SEW Table 35.")
+        raise ValueError("Chart 1A requires SEW Table 35.")
 
 
 def _select_degree_supply_source_rows(table: pd.DataFrame) -> pd.DataFrame:

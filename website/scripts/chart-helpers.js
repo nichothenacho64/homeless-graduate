@@ -198,7 +198,7 @@ export function getChartHeight(baseHeight, numRows, rowHeight) {
     return baseHeight + (numRows * rowHeight);
 }
 
-export function createChart4GainLegendTrace(gainTrace) {
+export function createChart5GainLegendTrace(gainTrace) {
     const legendRow = {
         short_term_fte_pct: 0,
         medium_term_fte_pct: gainTrace.gainPp
@@ -219,23 +219,23 @@ export function createChart4GainLegendTrace(gainTrace) {
     };
 }
 
-export function createChart4GainLegend(gainValues) {
-    const gain4Trace = createChart4GainLegendTrace({
+export function createChart5GainLegend(gainValues) {
+    const gain4Trace = createChart5GainLegendTrace({
         name: `${gainValues.high}+ pp`,
         gainPp: gainValues.high,
         thresholds: gainValues
     });
-    const gain3Trace = createChart4GainLegendTrace({
+    const gain3Trace = createChart5GainLegendTrace({
         name: `${gainValues.medium}-${gainValues.high - 1} pp`,
         gainPp: gainValues.medium,
         thresholds: gainValues
     });
-    const gain2Trace = createChart4GainLegendTrace({
+    const gain2Trace = createChart5GainLegendTrace({
         name: `${gainValues.low}-${gainValues.medium - 1} pp`,
         gainPp: gainValues.low,
         thresholds: gainValues
     });
-    const gain1Trace = createChart4GainLegendTrace({
+    const gain1Trace = createChart5GainLegendTrace({
         name: `<${gainValues.low} pp`,
         gainPp: gainValues.low - 1,
         thresholds: gainValues
@@ -244,25 +244,25 @@ export function createChart4GainLegend(gainValues) {
     return [gain4Trace, gain3Trace, gain2Trace, gain1Trace];
 }
 
-export function getChart5WorkFitQuadrants(chartData, medianQuadrants) {
+export function getChart6WorkFitQuadrants(chartData, medianQuadrants) {
     const workFitQuadrants = [
         {
-            name: "High gain / high fit improvement",
+            name: "High gain/high fit improvement",
             colour: THEME_COLOURS.blue700,
             rows: []
         },
         {
-            name: "High gain / low fit improvement",
+            name: "High gain/low fit improvement",
             colour: THEME_COLOURS.amber700,
             rows: []
         },
         {
-            name: "Low gain / high fit improvement",
+            name: "Low gain/high fit improvement",
             colour: THEME_COLOURS.blue500,
             rows: []
         },
         {
-            name: "Low gain / low fit improvement",
+            name: "Low gain/low fit improvement",
             colour: THEME_COLOURS.grey500,
             rows: []
         },

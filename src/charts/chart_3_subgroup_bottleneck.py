@@ -8,9 +8,9 @@ from matplotlib.figure import Figure
 
 from src.charts.constants import (
     AXIS_GRID_LINEWIDTH,
-    CHART_2_GAP_LABEL_OFFSET,
-    CHART_2_TITLE,
-    CHART_2_X_AXIS,
+    CHART_3_GAP_LABEL_OFFSET,
+    CHART_3_TITLE,
+    CHART_3_X_AXIS,
     CONNECTOR_COLOR,
     DUMBBELL_CONNECTOR_ZORDER,
     DUMBBELL_LEFT_POINT_ZORDER,
@@ -28,7 +28,7 @@ from src.charts.style import (
 )
 
 
-def create_chart_2(chart_table: pd.DataFrame) -> Figure:
+def create_chart_3(chart_table: pd.DataFrame) -> Figure:
     apply_chart_style()
     ordered_table = chart_table.sort_values(
         ["sort_order", "subgroup_dimension"],
@@ -72,8 +72,8 @@ def create_chart_2(chart_table: pd.DataFrame) -> Figure:
     for row_index in np.flatnonzero(available_mask.to_numpy()):
         axis.text(
             min(
-                higher_values.iloc[row_index] + CHART_2_GAP_LABEL_OFFSET,
-                CHART_2_X_AXIS.maximum - 0.4,
+                higher_values.iloc[row_index] + CHART_3_GAP_LABEL_OFFSET,
+                CHART_3_X_AXIS.maximum - 0.4,
             ),
             row_positions[row_index],
             f"{gap_values.iloc[row_index]:.1f} pp",
@@ -85,14 +85,14 @@ def create_chart_2(chart_table: pd.DataFrame) -> Figure:
 
     _draw_pair_y_labels(axis, row_positions, ordered_table)
     axis.set_title(
-        CHART_2_TITLE,
+        CHART_3_TITLE,
         loc="left",
         fontsize=SUBGROUP_CHART_TITLE_FONT_SIZE,
         color=TEXT_COLOR,
     )
     axis.set_xlabel("2024 short-term full-time employment (%)")
-    axis.set_xlim(*CHART_2_X_AXIS.limits)
-    axis.set_xticks(CHART_2_X_AXIS.ticks)
+    axis.set_xlim(*CHART_3_X_AXIS.limits)
+    axis.set_xticks(CHART_3_X_AXIS.ticks)
     axis.grid(
         axis="x",
         color=GRID_COLOR,

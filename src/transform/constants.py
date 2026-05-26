@@ -8,37 +8,50 @@ MEDIUM_TERM_TIME_WINDOW = "medium_term"
 
 
 # Chart ids
-CHART_1_ID = "chart_1_transition_window"
-CHART_2_ID = "chart_2_subgroup_bottleneck"
-CHART_3_ID = "chart_3_gap_shapes"
-CHART_4_ID = "chart_4_field_conversion"
-CHART_5_ID = "chart_5_work_fit"
-CHART_6A_ID = "chart_6a_skill_by_age"
-CHART_6B_ID = "chart_6b_degree_supply"
+CHART_1A_ID = "chart_1a_degree_supply"
+CHART_1B_ID = "chart_1b_skill_by_age"
+CHART_2_ID = "chart_2_transition_window"
+CHART_3_ID = "chart_3_subgroup_bottleneck"
+CHART_4_ID = "chart_4_gap_shapes"
+CHART_5_ID = "chart_5_field_conversion"
+CHART_6_ID = "chart_6_work_fit"
 CHART_7_ID = "chart_7_subgroup_comparator"
 
 CHART_TABLE_IDS_BY_NUMBER = {
-    1: CHART_1_ID,
+    1.1: CHART_1A_ID,
+    1.2: CHART_1B_ID,
     2: CHART_2_ID,
     3: CHART_3_ID,
     4: CHART_4_ID,
     5: CHART_5_ID,
-    6.1: CHART_6A_ID,
-    6.2: CHART_6B_ID,
+    6: CHART_6_ID,
     7: CHART_7_ID,
 }
 
 
 # Chart table schemas for referencing column names directly
 CHART_TABLE_SCHEMAS = {
-    CHART_1_ID: [
+    CHART_1A_ID: [
+        "year",
+        "bachelor_degree_or_above_holders_increase_pct",
+        "source_key",
+    ],
+    CHART_1B_ID: [
+        "age_group",
+        "age_order",
+        "skill_level",
+        "skill_order",
+        "share_pct",
+        "source_key",
+    ],
+    CHART_2_ID: [
         "display_year",
         "series_key",
         "value_pct",
         "source_key",
         "series_order",
     ],
-    CHART_2_ID: [
+    CHART_3_ID: [
         "subgroup_dimension",
         "gap_pp",
         "lower_group",
@@ -48,7 +61,7 @@ CHART_TABLE_SCHEMAS = {
         "source_key",
         "sort_order",
     ],
-    CHART_3_ID: [
+    CHART_4_ID: [
         "subgroup_dimension",
         "time_window",
         "time_window_order",
@@ -60,32 +73,19 @@ CHART_TABLE_SCHEMAS = {
         "source_key",
         "sort_order",
     ],
-    CHART_4_ID: [
+    CHART_5_ID: [
         "study_area",
         "short_term_fte_pct",
         "medium_term_fte_pct",
         "source_key",
     ],
-    CHART_5_ID: [
+    CHART_6_ID: [
         "study_area",
         "fte_gain_pp",
         "underutilisation_reduction_pp",
         "fit_metric_key",
         "employment_source_key",
         "fit_source_key",
-    ],
-    CHART_6A_ID: [
-        "age_group",
-        "age_order",
-        "skill_level",
-        "skill_order",
-        "share_pct",
-        "source_key",
-    ],
-    CHART_6B_ID: [
-        "year",
-        "bachelor_degree_or_above_holders_increase_pct",
-        "source_key",
     ],
     CHART_7_ID: [
         "selector_id",
@@ -102,13 +102,13 @@ CHART_TABLE_SCHEMAS = {
     ],
 }
 
-CHART_1_TABLE_COLUMNS = CHART_TABLE_SCHEMAS[CHART_1_ID]
+CHART_1A_TABLE_COLUMNS = CHART_TABLE_SCHEMAS[CHART_1A_ID]
+CHART_1B_TABLE_COLUMNS = CHART_TABLE_SCHEMAS[CHART_1B_ID]
 CHART_2_TABLE_COLUMNS = CHART_TABLE_SCHEMAS[CHART_2_ID]
 CHART_3_TABLE_COLUMNS = CHART_TABLE_SCHEMAS[CHART_3_ID]
 CHART_4_TABLE_COLUMNS = CHART_TABLE_SCHEMAS[CHART_4_ID]
 CHART_5_TABLE_COLUMNS = CHART_TABLE_SCHEMAS[CHART_5_ID]
-CHART_6A_TABLE_COLUMNS = CHART_TABLE_SCHEMAS[CHART_6A_ID]
-CHART_6B_TABLE_COLUMNS = CHART_TABLE_SCHEMAS[CHART_6B_ID]
+CHART_6_TABLE_COLUMNS = CHART_TABLE_SCHEMAS[CHART_6_ID]
 CHART_7_TABLE_COLUMNS = CHART_TABLE_SCHEMAS[CHART_7_ID]
 
 
@@ -199,39 +199,39 @@ SEW_AGE_GROUP_ORDER = {
 }
 
 
-# Chart 1 — transition window
-CHART_1_GOS_L_SHORT_TERM_FTE_SERIES_KEY = "gos_l_short_term_fte"
-CHART_1_GOS_L_MEDIUM_TERM_FTE_SERIES_KEY = "gos_l_medium_term_fte"
-CHART_1_GOS_SHORT_TERM_FTE_SERIES_KEY = "gos_short_term_fte"
+# Chart 2 — transition window
+CHART_2_GOS_L_SHORT_TERM_FTE_SERIES_KEY = "gos_l_short_term_fte"
+CHART_2_GOS_L_MEDIUM_TERM_FTE_SERIES_KEY = "gos_l_medium_term_fte"
+CHART_2_GOS_SHORT_TERM_FTE_SERIES_KEY = "gos_short_term_fte"
 
-CHART_1_SERIES_ORDER = {
-    CHART_1_GOS_L_SHORT_TERM_FTE_SERIES_KEY: 0,
-    CHART_1_GOS_L_MEDIUM_TERM_FTE_SERIES_KEY: 1,
-    CHART_1_GOS_SHORT_TERM_FTE_SERIES_KEY: 2,
+CHART_2_SERIES_ORDER = {
+    CHART_2_GOS_L_SHORT_TERM_FTE_SERIES_KEY: 0,
+    CHART_2_GOS_L_MEDIUM_TERM_FTE_SERIES_KEY: 1,
+    CHART_2_GOS_SHORT_TERM_FTE_SERIES_KEY: 2,
 }
 
 
-# Chart 4 — field conversion
-CHART_4_EXCLUDED_STUDY_AREAS = {
+# Chart 5 — field conversion
+CHART_5_EXCLUDED_STUDY_AREAS = {
     "Standard deviation": "non-study-area summary/statistical row",
     "Total": "non-study-area summary row",
 }
 
 
-# Chart 5 — work fit
-CHART_5_WORK_FIT_METRIC_KEY = "skills_education_utilisation"
-CHART_5_SHORT_TERM_UNDERUTILISATION_COLUMN = (
+# Chart 6 — work fit
+CHART_6_WORK_FIT_METRIC_KEY = "skills_education_utilisation"
+CHART_6_SHORT_TERM_UNDERUTILISATION_COLUMN = (
     "extent_to_which_skills_and_education_not_fully_utilised_short_term_fte"
 )
-CHART_5_MEDIUM_TERM_UNDERUTILISATION_COLUMN = (
+CHART_6_MEDIUM_TERM_UNDERUTILISATION_COLUMN = (
     "extent_to_which_skills_and_education_not_fully_utilised_medium_term_fte"
 )
-CHART_5_EXCLUDED_STUDY_AREAS = {
+CHART_6_EXCLUDED_STUDY_AREAS = {
     "Total": "non-study-area summary row",
 }
 
 
-# Chart 6B — SEW degree supply
+# Chart 1A — SEW degree supply
 SEW_DEGREE_SUPPLY_BASE_YEAR = 2016
 SEW_DEGREE_SUPPLY_YEARS = tuple(range(2016, 2026))
 
@@ -239,3 +239,175 @@ SEW_DEGREE_SUPPLY_YEARS = tuple(range(2016, 2026))
 # Chart 7 — subgroup comparator
 CHART_7_GROUP_A_ROLE = "group_a"
 CHART_7_GROUP_B_ROLE = "group_b"
+
+
+# Chart metadata additions
+CHART_1A_METADATA = {
+    "labels": {
+        "metrics": {
+            "bachelor_degree_or_above_holders_increase_pct": {
+                "label": "Increase in bachelor-degree-or-above holders since 2016",
+                "unit": "percent",
+            },
+        },
+    },
+}
+
+CHART_1B_METADATA = {
+    "labels": {
+        "metrics": {
+            "share_pct": {
+                "label": "Share",
+                "unit": "percent",
+            },
+        },
+    },
+}
+
+CHART_2_METADATA = {
+    "labels": {
+        "time_windows": {
+            SHORT_TERM_TIME_WINDOW: "Short term",
+            MEDIUM_TERM_TIME_WINDOW: "Medium term",
+        },
+        "series": {
+            CHART_2_GOS_L_SHORT_TERM_FTE_SERIES_KEY: "GOS-L short term",
+            CHART_2_GOS_L_MEDIUM_TERM_FTE_SERIES_KEY: "GOS-L medium term",
+            CHART_2_GOS_SHORT_TERM_FTE_SERIES_KEY: "GOS short term",
+        },
+        "metrics": {
+            "value_pct": {
+                "label": "Full-time employment",
+                "unit": "percent",
+            },
+        },
+    },
+    "details": {
+        "year_semantics": {
+            "display_year": "terminal_year_extracted_from_source_year_or_period_label",
+        },
+    },
+}
+
+CHART_3_METADATA = {
+    "labels": {
+        "metrics": {
+            "gap_pp": {
+                "label": "Employment gap",
+                "unit": "percentage_point",
+            },
+            "lower_group_pct": {
+                "label": "Lower group full-time employment",
+                "unit": "percent",
+            },
+            "higher_group_pct": {
+                "label": "Higher group full-time employment",
+                "unit": "percent",
+            },
+        },
+    },
+}
+
+CHART_4_METADATA = {
+    "labels": {
+        "time_windows": {
+            SHORT_TERM_TIME_WINDOW: "Short term",
+            MEDIUM_TERM_TIME_WINDOW: "Medium term",
+        },
+        "metrics": {
+            "signed_gap_pp": {
+                "label": "Signed employment gap",
+                "unit": "percentage_point",
+            },
+            "reference_group_pct": {
+                "label": "Reference group full-time employment",
+                "unit": "percent",
+            },
+            "comparison_group_pct": {
+                "label": "Comparison group full-time employment",
+                "unit": "percent",
+            },
+        },
+    },
+    "details": {
+        "signed_gap_direction": "comparison_group_pct - reference_group_pct",
+        "reference_group_rule": "group_with_lower_short_term_full_time_employment",
+    },
+}
+
+CHART_5_METADATA = {
+    "labels": {
+        "metrics": {
+            "short_term_fte_pct": {
+                "label": "Short-term full-time employment",
+                "unit": "percent",
+            },
+            "medium_term_fte_pct": {
+                "label": "Medium-term full-time employment",
+                "unit": "percent",
+            },
+        },
+    },
+}
+
+CHART_6_METADATA = {
+    "labels": {
+        "metrics": {
+            "fte_gain_pp": {
+                "label": "Full-time employment gain",
+                "unit": "percentage_point",
+            },
+            "underutilisation_reduction_pp": {
+                "label": "Underutilisation reduction",
+                "unit": "percentage_point",
+            },
+        },
+        "fit_metrics": {
+            CHART_6_WORK_FIT_METRIC_KEY: "Skills and education not fully utilised",
+        },
+    },
+    "details": {
+        "fit_metric": {
+            "fit_metric_key": CHART_6_WORK_FIT_METRIC_KEY,
+            "employment_source_key": GOS_L_6_SOURCE_KEY,
+            "fit_metric_source_key": GOS_L_26_SOURCE_KEY,
+            "fit_metric_direction": "lower_underutilisation_is_better",
+            "fit_change_formula": (
+                "short_term_underutilisation_pct - medium_term_underutilisation_pct"
+            ),
+            "fit_metric_source_columns": {
+                "short_term_underutilisation_pct": (
+                    CHART_6_SHORT_TERM_UNDERUTILISATION_COLUMN
+                ),
+                "medium_term_underutilisation_pct": (
+                    CHART_6_MEDIUM_TERM_UNDERUTILISATION_COLUMN
+                ),
+            },
+        },
+    },
+}
+
+CHART_7_METADATA = {
+    "labels": {
+        "time_windows": {
+            SHORT_TERM_TIME_WINDOW: "Short term",
+            MEDIUM_TERM_TIME_WINDOW: "Medium term",
+        },
+        "metrics": {
+            "full_time_employment_pct": {
+                "label": "Full-time employment",
+                "unit": "percent",
+            },
+        },
+        "group_roles": {
+            CHART_7_GROUP_A_ROLE: "Group A",
+            CHART_7_GROUP_B_ROLE: "Group B",
+        },
+    },
+    "details": {
+        "group_role_semantics": {
+            CHART_7_GROUP_A_ROLE: "first_group_in_comparison_label",
+            CHART_7_GROUP_B_ROLE: "second_group_in_comparison_label",
+        },
+    },
+}

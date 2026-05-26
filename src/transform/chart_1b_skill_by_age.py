@@ -5,7 +5,8 @@ import pandas as pd
 from src.preparation.abs import clean_abs_display_text, format_abs_column_label
 from src.transform.chart_helpers import select_chart_table_schema
 from src.transform.constants import (
-    CHART_6A_TABLE_COLUMNS,
+    CHART_1B_METADATA,
+    CHART_1B_TABLE_COLUMNS,
     SEW_32_SOURCE_KEY,
     SEW_AGE_GROUP_ORDER,
     SEW_SKILL_LEVEL_ORDER,
@@ -13,19 +14,7 @@ from src.transform.constants import (
 from src.types import ABSPreparedSheet, PreparedRows
 
 
-CHART_6A_METADATA = {
-    "labels": {
-        "metrics": {
-            "share_pct": {
-                "label": "Share",
-                "unit": "percent",
-            },
-        },
-    },
-}
-
-
-def build_chart_6a_table(sew_table_32_sheet: ABSPreparedSheet) -> pd.DataFrame:
+def build_chart_1b_table(sew_table_32_sheet: ABSPreparedSheet) -> pd.DataFrame:
     prepared_rows: PreparedRows = []
 
     for _, row in sew_table_32_sheet.table.iterrows():
@@ -54,6 +43,6 @@ def build_chart_6a_table(sew_table_32_sheet: ABSPreparedSheet) -> pd.DataFrame:
         ["age_order", "skill_order"],
         kind="mergesort",
     )
-    chart_table = select_chart_table_schema(chart_table, CHART_6A_TABLE_COLUMNS)
-    chart_table.attrs["chart_metadata"] = CHART_6A_METADATA
+    chart_table = select_chart_table_schema(chart_table, CHART_1B_TABLE_COLUMNS)
+    chart_table.attrs["chart_metadata"] = CHART_1B_METADATA
     return chart_table

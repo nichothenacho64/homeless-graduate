@@ -6,9 +6,10 @@ import pandas as pd
 
 from src.transform.chart_helpers import select_chart_table_schema
 from src.transform.constants import (
-    CHART_7_TABLE_COLUMNS,
     CHART_7_GROUP_A_ROLE,
     CHART_7_GROUP_B_ROLE,
+    CHART_7_METADATA,
+    CHART_7_TABLE_COLUMNS,
     GOS_8_SOURCE_KEY,
     GOS_L_160_SOURCE_KEY,
     MEDIUM_TERM_TIME_WINDOW,
@@ -25,32 +26,6 @@ from src.transform.qilt import (
     select_qilt_subgroup_pair_rows,
 )
 from src.types import PreparedRows, QILTPreparedSheet
-
-
-CHART_7_METADATA = {
-    "labels": {
-        "time_windows": {
-            SHORT_TERM_TIME_WINDOW: "Short term",
-            MEDIUM_TERM_TIME_WINDOW: "Medium term",
-        },
-        "metrics": {
-            "full_time_employment_pct": {
-                "label": "Full-time employment",
-                "unit": "percent",
-            },
-        },
-        "group_roles": {
-            CHART_7_GROUP_A_ROLE: "Group A",
-            CHART_7_GROUP_B_ROLE: "Group B",
-        },
-    },
-    "details": {
-        "group_role_semantics": {
-            CHART_7_GROUP_A_ROLE: "first_group_in_comparison_label",
-            CHART_7_GROUP_B_ROLE: "second_group_in_comparison_label",
-        },
-    },
-}
 
 
 def build_chart_7_table(

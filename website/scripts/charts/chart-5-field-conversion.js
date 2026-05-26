@@ -1,5 +1,5 @@
 import {
-    CHART_4_GAIN_VALUES,
+    CHART_5_GAIN_VALUES,
     CHART_TITLES,
     MARKER_SIZE
 } from "../config.js";
@@ -8,7 +8,7 @@ import {
     loadChartData,
 } from "../data.js";
 import {
-    createChart4GainLegend,
+    createChart5GainLegend,
     createEqualityLineTrace,
     getFieldConversionColour,
 } from "../chart-helpers.js";
@@ -16,7 +16,7 @@ import {
     renderChart,
 } from "../rendering.js";
 
-export async function renderChart4(chartId) {
+export async function renderChart5(chartId) {
     const { chartData, chartMetadata } = await loadChartData(chartId);
 
     const xKey = "short_term_fte_pct";
@@ -27,7 +27,7 @@ export async function renderChart4(chartId) {
 
     const data = [];
     const equalityLineTrace = createEqualityLineTrace(50, 100);
-    const gainLegendTraces = createChart4GainLegend(CHART_4_GAIN_VALUES);
+    const gainLegendTraces = createChart5GainLegend(CHART_5_GAIN_VALUES);
 
     equalityLineTrace.showlegend = false;
     
@@ -49,7 +49,7 @@ export async function renderChart4(chartId) {
             showlegend: false,
             marker: {
                 size: MARKER_SIZE.small,
-                color: getFieldConversionColour(row, CHART_4_GAIN_VALUES),
+                color: getFieldConversionColour(row, CHART_5_GAIN_VALUES),
             },
             hovertemplate: `<b>%{fullData.name}</b><br>` +
                 `${xLabel}: %{x}%<br>` +
@@ -62,7 +62,7 @@ export async function renderChart4(chartId) {
     }
 
     const layout = {
-        title: { text: CHART_TITLES.chart4 },
+        title: { text: CHART_TITLES.chart5 },
         showlegend: true,
         legend: {
             title: { text: "Medium-term gain over short-term FTE" },

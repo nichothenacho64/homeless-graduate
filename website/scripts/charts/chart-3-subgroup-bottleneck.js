@@ -10,14 +10,14 @@ import {
     getYTickValues,
 } from "../chart-helpers.js";
 import {
-    CHART_2_DIMENSIONS,
+    CHART_3_DIMENSIONS,
     CHART_AXES,
     CHART_TITLES,
     DUMBBELL_LINE,
     THEME_COLOURS
 } from "../config.js";
 
-export async function renderChart2(chartId) {
+export async function renderChart3(chartId) {
     const { chartData, chartMetadata } = await loadChartData(chartId);
 
     const data = [];
@@ -50,12 +50,12 @@ export async function renderChart2(chartId) {
     }
 
     const layout = {
-        title: { text: CHART_TITLES.chart2 },
-        height: getChartHeight(CHART_2_DIMENSIONS.baseHeight, chartData.length, CHART_2_DIMENSIONS.rowHeight),
+        title: { text: CHART_TITLES.chart3 },
+        height: getChartHeight(CHART_3_DIMENSIONS.baseHeight, chartData.length, CHART_3_DIMENSIONS.rowHeight),
         showlegend: true,
         xaxis: {
             showline: true,
-            title: { text: CHART_AXES.chart2XAxis },
+            title: { text: CHART_AXES.chart3XAxis },
             range: [55, 86],
             dtick: 5
         },
@@ -68,8 +68,8 @@ export async function renderChart2(chartId) {
         },
         annotations: getGapLabelAnnotations(chartData),
         margin: {
-            l: CHART_2_DIMENSIONS.leftMargin,
-            r: CHART_2_DIMENSIONS.rightMargin,
+            l: CHART_3_DIMENSIONS.leftMargin,
+            r: CHART_3_DIMENSIONS.rightMargin,
         }
     };
 

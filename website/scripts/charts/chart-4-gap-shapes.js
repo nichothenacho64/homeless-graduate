@@ -15,14 +15,14 @@ import {
     getYTickValues,
 } from "../chart-helpers.js";
 import {
-    CHART_3_DIMENSIONS,
+    CHART_4_DIMENSIONS,
     CHART_AXES,
     CHART_TITLES,
     DUMBBELL_LINE,
     THEME_COLOURS
 } from "../config.js";
 
-export async function renderChart3(chartId) {
+export async function renderChart4(chartId) {
     const { chartData } = await loadChartData(chartId);
     const shortTermRows = getTrace(chartData, "time_window", "short_term");
     const mediumTermRows = getTrace(chartData, "time_window", "medium_term");
@@ -59,12 +59,12 @@ export async function renderChart3(chartId) {
     }
 
     const layout = {
-        title: { text: CHART_TITLES.chart3 }, // short-term and medium-term full-time employment gap shapes
-        height: getChartHeight(CHART_3_DIMENSIONS.baseHeight, shortTermRows.length, CHART_3_DIMENSIONS.rowHeight),
+        title: { text: CHART_TITLES.chart4 }, // short-term and medium-term full-time employment gap shapes
+        height: getChartHeight(CHART_4_DIMENSIONS.baseHeight, shortTermRows.length, CHART_4_DIMENSIONS.rowHeight),
         showlegend: true,
         xaxis: {
             showline: true,
-            title: { text: CHART_AXES.chart3XAxis },
+            title: { text: CHART_AXES.chart4XAxis },
             range: [-3, 19],
             dtick: 3
         },
@@ -76,8 +76,8 @@ export async function renderChart3(chartId) {
         },
         shapes: [createReferenceLine("x", 0, THEME_COLOURS.textColour, 1)],
         margin: {
-            l: CHART_3_DIMENSIONS.leftMargin,
-            r: CHART_3_DIMENSIONS.rightMargin,
+            l: CHART_4_DIMENSIONS.leftMargin,
+            r: CHART_4_DIMENSIONS.rightMargin,
         }
     };
 

@@ -7,7 +7,8 @@ import pandas as pd
 from src.preparation.qilt import clean_qilt_display_text
 from src.transform.chart_helpers import select_chart_table_schema
 from src.transform.constants import (
-    CHART_2_TABLE_COLUMNS,
+    CHART_3_METADATA,
+    CHART_3_TABLE_COLUMNS,
     GOS_5_SOURCE_KEY,
     GOS_8_SOURCE_KEY,
     GOS_GENDER_SHORT_TERM_COLUMNS_BY_ROW_LABEL,
@@ -18,27 +19,7 @@ from src.transform.qilt import build_qilt_subgroup_pair_summary
 from src.types import PreparedRows, QILTPreparedSheet
 
 
-CHART_2_METADATA = {
-    "labels": {
-        "metrics": {
-            "gap_pp": {
-                "label": "Employment gap",
-                "unit": "percentage_point",
-            },
-            "lower_group_pct": {
-                "label": "Lower group full-time employment",
-                "unit": "percent",
-            },
-            "higher_group_pct": {
-                "label": "Higher group full-time employment",
-                "unit": "percent",
-            },
-        },
-    },
-}
-
-
-def build_chart_2_table(
+def build_chart_3_table(
     gos_sheet: QILTPreparedSheet,
     gender_sheet: Optional[QILTPreparedSheet] = None,
 ) -> pd.DataFrame:
@@ -66,7 +47,7 @@ def build_chart_2_table(
 
     subgroup_table = pd.DataFrame(prepared_rows)
     summary_rows = [
-        _build_chart_2_summary_row(group_table)
+        _build_chart_3_summary_row(group_table)
         for _, group_table in subgroup_table.groupby("subgroup_dimension", sort=False)
     ]
     chart_table = pd.DataFrame(summary_rows)
@@ -75,8 +56,8 @@ def build_chart_2_table(
         ["sort_order", "subgroup_dimension"],
         kind="mergesort",
     ).reset_index(drop=True)
-    chart_table = select_chart_table_schema(chart_table, CHART_2_TABLE_COLUMNS)
-    chart_table.attrs["chart_metadata"] = CHART_2_METADATA
+    chart_table = select_chart_table_schema(chart_table, CHART_3_TABLE_COLUMNS)
+    chart_table.attrs["chart_metadata"] = CHART_3_METADATA
     return chart_table
 
 
@@ -119,7 +100,7 @@ def _build_gender_rows(gender_table: pd.DataFrame) -> PreparedRows:
     return [male_row, female_row]
 
 
-def _build_chart_2_summary_row(group_table: pd.DataFrame) -> dict[str, object]:
+def _build_chart_3_summary_row(group_table: pd.DataFrame) -> dict[str, object]:
     subgroup_dimension = str(group_table["subgroup_dimension"].iloc[0])
     source_key = str(group_table["source_key"].iloc[0])
     summary_row: dict[str, object] = {

@@ -10,7 +10,7 @@ import {
 } from "../data.js";
 import { renderChart } from "../rendering.js";
 
-export async function renderChart6b(chartId) {
+export async function renderChart1a(chartId) {
     const { chartData, chartMetadata } = await loadChartData(chartId);
 
     const xKey = "year";
@@ -60,7 +60,7 @@ export async function renderChart6b(chartId) {
     data.push(lineTrace, finalPointTrace);
 
     const layout = {
-        title: { text: CHART_TITLES.chart6b },
+        title: { text: CHART_TITLES.chart1a },
         xaxis: {
             title: { text: "Year" },
             range: [2016, 2025.1],

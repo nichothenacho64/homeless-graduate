@@ -6,46 +6,19 @@ from src.parsers.constants import QILT_YEAR_PATTERN
 from src.preparation.qilt import clean_qilt_display_text
 from src.transform.chart_helpers import select_chart_table_schema
 from src.transform.constants import (
-    CHART_1_GOS_L_MEDIUM_TERM_FTE_SERIES_KEY,
-    CHART_1_GOS_L_SHORT_TERM_FTE_SERIES_KEY,
-    CHART_1_GOS_SHORT_TERM_FTE_SERIES_KEY,
-    CHART_1_SERIES_ORDER,
-    CHART_1_TABLE_COLUMNS,
+    CHART_2_GOS_L_MEDIUM_TERM_FTE_SERIES_KEY,
+    CHART_2_GOS_L_SHORT_TERM_FTE_SERIES_KEY,
+    CHART_2_GOS_SHORT_TERM_FTE_SERIES_KEY,
+    CHART_2_METADATA,
+    CHART_2_SERIES_ORDER,
+    CHART_2_TABLE_COLUMNS,
     GOS_21_SOURCE_KEY,
     GOS_L_1_SOURCE_KEY,
-    MEDIUM_TERM_TIME_WINDOW,
-    SHORT_TERM_TIME_WINDOW,
 )
 from src.types import PreparedRows, QILTPreparedSheet
 
 
-CHART_1_METADATA = {
-    "labels": {
-        "time_windows": {
-            SHORT_TERM_TIME_WINDOW: "Short term",
-            MEDIUM_TERM_TIME_WINDOW: "Medium term",
-        },
-        "series": {
-            CHART_1_GOS_L_SHORT_TERM_FTE_SERIES_KEY: "GOS-L short term",
-            CHART_1_GOS_L_MEDIUM_TERM_FTE_SERIES_KEY: "GOS-L medium term",
-            CHART_1_GOS_SHORT_TERM_FTE_SERIES_KEY: "GOS short term",
-        },
-        "metrics": {
-            "value_pct": {
-                "label": "Full-time employment",
-                "unit": "percent",
-            },
-        },
-    },
-    "details": {
-        "year_semantics": {
-            "display_year": "terminal_year_extracted_from_source_year_or_period_label",
-        },
-    },
-}
-
-
-def build_chart_1_table(
+def build_chart_2_table(
     gos_sheet: QILTPreparedSheet,
     gos_l_sheet: QILTPreparedSheet,
 ) -> pd.DataFrame:
@@ -54,13 +27,13 @@ def build_chart_1_table(
         *_build_gos_l_full_time_rows(gos_l_sheet.table),
     ]
     chart_table = pd.DataFrame(rows)
-    chart_table["series_order"] = chart_table["series_key"].map(CHART_1_SERIES_ORDER)
+    chart_table["series_order"] = chart_table["series_key"].map(CHART_2_SERIES_ORDER)
     chart_table = chart_table.sort_values(
         ["display_year", "series_order"],
         kind="mergesort",
     )
-    chart_table = select_chart_table_schema(chart_table, CHART_1_TABLE_COLUMNS)
-    chart_table.attrs["chart_metadata"] = CHART_1_METADATA
+    chart_table = select_chart_table_schema(chart_table, CHART_2_TABLE_COLUMNS)
+    chart_table.attrs["chart_metadata"] = CHART_2_METADATA
     return chart_table
 
 
@@ -74,7 +47,7 @@ def _build_gos_short_term_full_time_rows(gos_table: pd.DataFrame) -> PreparedRow
         prepared_rows.append(
             {
                 "display_year": _extract_terminal_year(row["row_group"]),
-                "series_key": CHART_1_GOS_SHORT_TERM_FTE_SERIES_KEY,
+                "series_key": CHART_2_GOS_SHORT_TERM_FTE_SERIES_KEY,
                 "value_pct": row["full_time_employment"],
                 "source_key": GOS_21_SOURCE_KEY,
             }
@@ -92,13 +65,13 @@ def _build_gos_l_full_time_rows(gos_l_table: pd.DataFrame) -> PreparedRows:
             [
                 {
                     "display_year": display_year,
-                    "series_key": CHART_1_GOS_L_SHORT_TERM_FTE_SERIES_KEY,
+                    "series_key": CHART_2_GOS_L_SHORT_TERM_FTE_SERIES_KEY,
                     "value_pct": row["short_term_fte"],
                     "source_key": GOS_L_1_SOURCE_KEY,
                 },
                 {
                     "display_year": display_year,
-                    "series_key": CHART_1_GOS_L_MEDIUM_TERM_FTE_SERIES_KEY,
+                    "series_key": CHART_2_GOS_L_MEDIUM_TERM_FTE_SERIES_KEY,
                     "value_pct": row["medium_term_fte"],
                     "source_key": GOS_L_1_SOURCE_KEY,
                 },

@@ -142,28 +142,28 @@ UNEQUAL_PANEL_STYLES = {
     },
 }
 
-CHART_1_TITLE = "Full-time employment across the transition window"
-CHART_1_SERIES_LABELS = {
+CHART_2_TITLE = "Full-time employment across the transition window"
+CHART_2_SERIES_LABELS = {
     "gos_l_short_term_fte": "GOS-L short-term baseline",
     "gos_l_medium_term_fte": "GOS-L medium-term",
     "gos_short_term_fte": "GOS short-term",
 }
-CHART_1_SERIES_COLORS = {
+CHART_2_SERIES_COLORS = {
     "gos_l_short_term_fte": CONNECTOR_COLOR,
     "gos_l_medium_term_fte": MEDIUM_TERM_COLOR,
     "gos_short_term_fte": SHORT_TERM_COLOR,
 }
-CHART_1_SERIES_MARKER_FACES = {
+CHART_2_SERIES_MARKER_FACES = {
     "gos_l_short_term_fte": "white",
     "gos_l_medium_term_fte": MEDIUM_TERM_COLOR,
     "gos_short_term_fte": SHORT_TERM_COLOR,
 }
-CHART_1_Y_LIMITS = (68, 94)
-CHART_1_Y_TICKS = np.arange(70, 95, 5)
+CHART_2_Y_LIMITS = (68, 94)
+CHART_2_Y_TICKS = np.arange(70, 95, 5)
 
-CHART_2_TITLE = "2024 short-term full-time employment gaps by subgroup dimension"
-CHART_2_X_AXIS = AxisSpec(55, 85, 5)
-CHART_2_GAP_LABEL_OFFSET = 1.0
+CHART_3_TITLE = "2024 short-term full-time employment gaps by subgroup dimension"
+CHART_3_X_AXIS = AxisSpec(55, 85, 5)
+CHART_3_GAP_LABEL_OFFSET = 1.0
 
-CHART_3_TITLE = "Short-term and medium-term full-time employment gap shapes"
-CHART_3_X_AXIS = AxisSpec(-1, 18, 3)
+CHART_4_TITLE = "Short-term and medium-term full-time employment gap shapes"
+CHART_4_X_AXIS = AxisSpec(-1, 18, 3)

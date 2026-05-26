@@ -8,11 +8,11 @@ import {
     getAxisValues,
     loadChartData,
 } from "../data.js";
-import { getWorkFitColour, getChart5WorkFitQuadrants } from "../chart-helpers.js";
+import { getWorkFitColour, getChart6WorkFitQuadrants } from "../chart-helpers.js";
 import { createReferenceLine, renderChart } from "../rendering.js";
 import { calculateMedian, unpack } from "../utils.js";
 
-export async function renderChart5(chartId) {
+export async function renderChart6(chartId) {
     const { chartData, chartMetadata } = await loadChartData(chartId);
 
     const xKey = "fte_gain_pp";
@@ -39,7 +39,7 @@ export async function renderChart5(chartId) {
     medianLines.push(yMedianLine);
 
     const data = [];
-    const workFitQuadrants = getChart5WorkFitQuadrants(chartData, medianQuadrants);
+    const workFitQuadrants = getChart6WorkFitQuadrants(chartData, medianQuadrants);
 
     for (let workFitQuadrant of workFitQuadrants) {
         if (workFitQuadrant.rows.length === 0) {
@@ -68,7 +68,7 @@ export async function renderChart5(chartId) {
     }
 
     const layout = {
-        title: { text: CHART_TITLES.chart5 },
+        title: { text: CHART_TITLES.chart6 },
         showlegend: true,
         legend: {
             title: { text: "Employment gain / work fit" },

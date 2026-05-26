@@ -4,7 +4,8 @@ import pandas as pd
 
 from src.transform.chart_helpers import select_chart_table_schema
 from src.transform.constants import (
-    CHART_3_TABLE_COLUMNS,
+    CHART_4_METADATA,
+    CHART_4_TABLE_COLUMNS,
     GOS_8_SOURCE_KEY,
     GOS_L_160_SOURCE_KEY,
     MEDIUM_TERM_TIME_WINDOW,
@@ -21,35 +22,7 @@ from src.transform.qilt import (
 from src.types import PreparedRows, QILTPreparedSheet
 
 
-CHART_3_METADATA = {
-    "labels": {
-        "time_windows": {
-            SHORT_TERM_TIME_WINDOW: "Short term",
-            MEDIUM_TERM_TIME_WINDOW: "Medium term",
-        },
-        "metrics": {
-            "signed_gap_pp": {
-                "label": "Signed employment gap",
-                "unit": "percentage_point",
-            },
-            "reference_group_pct": {
-                "label": "Reference group full-time employment",
-                "unit": "percent",
-            },
-            "comparison_group_pct": {
-                "label": "Comparison group full-time employment",
-                "unit": "percent",
-            },
-        },
-    },
-    "details": {
-        "signed_gap_direction": "comparison_group_pct - reference_group_pct",
-        "reference_group_rule": "group_with_lower_short_term_full_time_employment",
-    },
-}
-
-
-def build_chart_3_table(
+def build_chart_4_table(
     gos_sheet: QILTPreparedSheet,
     gos_l_sheet: QILTPreparedSheet,
 ) -> pd.DataFrame:
@@ -78,12 +51,12 @@ def build_chart_3_table(
         ["sort_order", "time_window_order"],
         kind="mergesort",
     ).reset_index(drop=True)
-    chart_table = select_chart_table_schema(chart_table, CHART_3_TABLE_COLUMNS)
-    chart_table.attrs["chart_metadata"] = CHART_3_METADATA
+    chart_table = select_chart_table_schema(chart_table, CHART_4_TABLE_COLUMNS)
+    chart_table.attrs["chart_metadata"] = CHART_4_METADATA
     return chart_table
 
 
-def build_chart_3_plot_table(chart_table: pd.DataFrame) -> pd.DataFrame:
+def build_chart_4_plot_table(chart_table: pd.DataFrame) -> pd.DataFrame:
     ordered_table = chart_table.sort_values(
         ["sort_order", "time_window_order"],
         kind="mergesort",
@@ -123,7 +96,7 @@ def _build_gap_shape_rows(group_table: pd.DataFrame) -> PreparedRows:
 
     if selected_pair is None:
         raise ValueError(
-            f"Cannot derive Chart 3 comparison for {subgroup_dimension!r}."
+            f"Cannot derive Chart 4 comparison for {subgroup_dimension!r}."
         )
 
     reference_row, comparison_row = selected_pair
@@ -196,6 +169,6 @@ def _raise_for_missing_fixed_pair_values(
 
     if missing_groups:
         raise ValueError(
-            f"Missing Chart 3 {value_column!r} values for "
+            f"Missing Chart 4 {value_column!r} values for "
             f"{subgroup_dimension!r}: {missing_groups}."
         )

@@ -4,13 +4,13 @@ import {
     loadChartData,
 } from "../data.js";
 import {
-    CHART_6A_TRACE_COLOURS,
+    CHART_1B_TRACE_COLOURS,
     CHART_TITLES
 } from "../config.js";
 import { renderChart } from "../rendering.js";
 import { unpack } from "../utils.js";
 
-export async function renderChart6a(chartId) {
+export async function renderChart1b(chartId) {
     const { chartData, chartMetadata } = await loadChartData(chartId);
 
     const data = [];
@@ -25,7 +25,7 @@ export async function renderChart6a(chartId) {
             name: traceName,
             type: "bar",
             marker: {
-                color: CHART_6A_TRACE_COLOURS[seriesOrder],
+                color: CHART_1B_TRACE_COLOURS[seriesOrder],
             },
             hovertemplate: `<b>%{fullData.name}</b><br>` +
                 `Age group: %{x}<br>` +
@@ -37,7 +37,7 @@ export async function renderChart6a(chartId) {
     }
 
     const layout = {
-        title: { text: CHART_TITLES.chart6a },
+        title: { text: CHART_TITLES.chart1b },
         showlegend: true,
         legend: {
             title: { text: "Skill levels" },
