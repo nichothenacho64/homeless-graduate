@@ -1,4 +1,4 @@
-export const DATA_DIR = "../data/processed/";
+export const DATA_DIR = "data/processed/";
 
 
 // chart IDs

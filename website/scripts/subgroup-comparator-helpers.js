@@ -140,7 +140,7 @@ export function getChart7Selectors(chartData) {
         }
     }
 
-    selectors.sort(sortByKeyAscending("sortOrder"));
+    sortByKeyAscending(selectors, "sortOrder");
 
     return selectors;
 }
@@ -190,7 +190,7 @@ export function getChart7SelectedRows(chartData, selectorId) {
         }
     }
 
-    selectedRows.sort(sortByKeyAscending("time_window_order"));
+    sortByKeyAscending(selectedRows, "time_window_order");
 
     return selectedRows;
 }

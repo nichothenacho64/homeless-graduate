@@ -21,10 +21,8 @@ export function sortAscending(a, b) {
     return a - b;
 }
 
-export function sortByKeyAscending(key) {
-    return function compareByKey(a, b) {
-        return sortAscending(a[key], b[key]);
-    };
+export function sortByKeyAscending(items, key) {
+    return items.sort((a, b) => sortAscending(a[key], b[key]));
 }
 
 function createNumberArray(values) {

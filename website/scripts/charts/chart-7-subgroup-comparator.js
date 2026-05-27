@@ -26,13 +26,7 @@ export async function renderChart7(chartId) {
     console.log(selectors[0].selectorId);
     console.log(selectorId);
 
-    renderChart7SelectedComparison(
-        chartId,
-        chartData,
-        chartMetadata,
-        selectorId,
-        explanationCard
-    );
+    renderChart7SelectedComparison(chartId, chartData, chartMetadata, selectorId, explanationCard);
 
     dropdownMenu.addEventListener("click", (event) => {
         const dropdownItem = event.target.closest(".dropdown-item");
@@ -41,12 +35,6 @@ export async function renderChart7(chartId) {
         const newSelectorId = dropdownItem.dataset.selectorId;
         const selectorId = updateChart7DropdownSelection(dropdownButton, dropdownMenu, selectors, newSelectorId);
 
-        renderChart7SelectedComparison(
-            chartId,
-            chartData,
-            chartMetadata,
-            selectorId,
-            explanationCard
-        );
+        renderChart7SelectedComparison(chartId, chartData, chartMetadata, selectorId, explanationCard);
     });
 }
