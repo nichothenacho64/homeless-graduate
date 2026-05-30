@@ -1,11 +1,7 @@
 import {
-    CHART_7_CARD_LABELS,
-    CHART_7_DIMENSIONS,
-    CHART_7_GAP_PATTERNS,
-    CHART_7_GAP_PATTERN_THRESHOLDS,
-    CHART_7_SIGN_CAPTIONS,
-    CHART_7_SIGN_DIRECTIONS,
-    CHART_7_Y_AXIS_PADDING,
+    CHART_7_TEXT,
+    CHART_7_RENDERING,
+    CHART_7_VALUES,
     CHART_TITLES,
     DUMBBELL_LINE,
     MARKER_SIZE,
@@ -80,7 +76,7 @@ function createChart7Layout(selectedRows, chartMetadata, yAxisRange) {
 
     return {
         title: { text: CHART_TITLES.chart7 },
-        height: CHART_7_DIMENSIONS.height,
+        height: CHART_7_RENDERING.dimensions.height,
         showlegend: false,
         xaxis: {
             categoryorder: "array",
@@ -96,10 +92,10 @@ function createChart7Layout(selectedRows, chartMetadata, yAxisRange) {
         },
         shapes: [yAxisLine],
         margin: {
-            l: CHART_7_DIMENSIONS.leftMargin,
-            r: CHART_7_DIMENSIONS.rightMargin,
-            t: CHART_7_DIMENSIONS.topMargin,
-            b: CHART_7_DIMENSIONS.bottomMargin
+            l: CHART_7_RENDERING.dimensions.leftMargin,
+            r: CHART_7_RENDERING.dimensions.rightMargin,
+            t: CHART_7_RENDERING.dimensions.topMargin,
+            b: CHART_7_RENDERING.dimensions.bottomMargin
         }
     };
 }
@@ -212,23 +208,23 @@ export function getChart7GapSummary(selectedRows) {
 export function getChart7GapPattern(gapSummary) {
     const shortTermGapSize = Math.abs(gapSummary.shortTermGap);
     const mediumTermGapSize = Math.abs(gapSummary.mediumTermGap);
-    const nearZeroGap = CHART_7_GAP_PATTERN_THRESHOLDS.nearZero;
-    const meaningfulGap = CHART_7_GAP_PATTERN_THRESHOLDS.meaningful;
-    const substantialShrinkRatio = CHART_7_GAP_PATTERN_THRESHOLDS.substantialShrinkRatio;
+    const nearZeroGap = CHART_7_VALUES.gapPatternThresholds.nearZero;
+    const meaningfulGap = CHART_7_VALUES.gapPatternThresholds.meaningful;
+    const substantialShrinkRatio = CHART_7_VALUES.gapPatternThresholds.substantialShrinkRatio;
     const signChanged = gapSummary.shortTermGap * gapSummary.mediumTermGap < 0;
     const substantiallyShrunk = mediumTermGapSize <= shortTermGapSize * substantialShrinkRatio;
 
     if (shortTermGapSize <= nearZeroGap && mediumTermGapSize <= nearZeroGap) {
-        return CHART_7_GAP_PATTERNS.smallThroughout;
+        return CHART_7_VALUES.gapPatterns.smallThroughout;
     } else if (signChanged) {
-        return CHART_7_GAP_PATTERNS.reverses;
+        return CHART_7_VALUES.gapPatterns.reverses;
     } else if (mediumTermGapSize <= nearZeroGap) {
-        return CHART_7_GAP_PATTERNS.mostlyCloses;
+        return CHART_7_VALUES.gapPatterns.mostlyCloses;
     } else if (mediumTermGapSize >= meaningfulGap && !substantiallyShrunk) {
-        return CHART_7_GAP_PATTERNS.persists;
+        return CHART_7_VALUES.gapPatterns.persists;
     }
 
-    return CHART_7_GAP_PATTERNS.mostlyCloses;
+    return CHART_7_VALUES.gapPatterns.mostlyCloses;
 }
 
 export function getChart7YAxisRange(chartData) {
@@ -237,21 +233,21 @@ export function getChart7YAxisRange(chartData) {
     const maxGap = Math.max(0, ...gapValues);
 
     return [
-        minGap - CHART_7_Y_AXIS_PADDING.lower,
-        maxGap + CHART_7_Y_AXIS_PADDING.upper
+        minGap - CHART_7_RENDERING.yAxisPadding.lower,
+        maxGap + CHART_7_RENDERING.yAxisPadding.upper
     ];
 }
 
 export function getChart7SignCaption(chartMetadata) {
     const signedGapDirection = chartMetadata.details.signed_gap_direction;
 
-    if (signedGapDirection === CHART_7_SIGN_DIRECTIONS.comparisonMinusReference) {
-        return CHART_7_SIGN_CAPTIONS.comparisonMinusReference;
-    } else if (signedGapDirection === CHART_7_SIGN_DIRECTIONS.referenceMinusComparison) {
-        return CHART_7_SIGN_CAPTIONS.referenceMinusComparison;
+    if (signedGapDirection === CHART_7_VALUES.signDirections.comparisonMinusReference) {
+        return CHART_7_TEXT.signCaptions.comparisonMinusReference;
+    } else if (signedGapDirection === CHART_7_VALUES.signDirections.referenceMinusComparison) {
+        return CHART_7_TEXT.signCaptions.referenceMinusComparison;
     }
 
-    return CHART_7_SIGN_CAPTIONS.referenceMinusComparison; // shouldn't get here
+    return CHART_7_TEXT.signCaptions.referenceMinusComparison; // shouldn't get here
 }
 
 export function updateChart7ExplanationCard(explanationCard, gapSummary, gapPattern, signCaption) {
@@ -263,9 +259,9 @@ export function updateChart7ExplanationCard(explanationCard, gapSummary, gapPatt
     const cardList = document.createElement("dl");
     cardList.className = "mb-0";
 
-    appendChart7CardValue(cardList, CHART_7_CARD_LABELS.shortTermGap, gapSummary.shortTermGap);
-    appendChart7CardValue(cardList, CHART_7_CARD_LABELS.mediumTermGap, gapSummary.mediumTermGap);
-    appendChart7CardValue(cardList, CHART_7_CARD_LABELS.change, gapSummary.change);
+    appendChart7CardValue(cardList, CHART_7_TEXT.cardLabels.shortTermGap, gapSummary.shortTermGap);
+    appendChart7CardValue(cardList, CHART_7_TEXT.cardLabels.mediumTermGap, gapSummary.mediumTermGap);
+    appendChart7CardValue(cardList, CHART_7_TEXT.cardLabels.change, gapSummary.change);
 
     const sentence = document.createElement("p");
     sentence.className = "mt-3 mb-0";

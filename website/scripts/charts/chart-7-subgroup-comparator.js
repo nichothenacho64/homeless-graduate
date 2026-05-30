@@ -1,4 +1,4 @@
-import { CHART_7_CARD_LABELS, CHART_7_ELEMENT_IDS } from "../config.js";
+import { CHART_7_TEXT, CHART_7_RENDERING } from "../config.js";
 import { loadChartData } from "../data.js";
 import {
     createChart7DropdownItems,
@@ -11,12 +11,12 @@ export async function renderChart7(chartId) {
     const { chartData, chartMetadata } = await loadChartData(chartId);
     const selectors = getChart7Selectors(chartData);
 
-    const dropdownButton = document.getElementById(CHART_7_ELEMENT_IDS.dropdownButton);
-    const dropdownMenu = document.getElementById(CHART_7_ELEMENT_IDS.dropdownMenu);
-    const selectorLabel = document.getElementById(CHART_7_ELEMENT_IDS.selectorLabel);
-    const explanationCard = document.getElementById(CHART_7_ELEMENT_IDS.explanationCard);
+    const dropdownButton = document.getElementById(CHART_7_RENDERING.elementIds.dropdownButton);
+    const dropdownMenu = document.getElementById(CHART_7_RENDERING.elementIds.dropdownMenu);
+    const selectorLabel = document.getElementById(CHART_7_RENDERING.elementIds.selectorLabel);
+    const explanationCard = document.getElementById(CHART_7_RENDERING.elementIds.explanationCard);
 
-    selectorLabel.textContent = CHART_7_CARD_LABELS.selector;
+    selectorLabel.textContent = CHART_7_TEXT.cardLabels.selector;
     createChart7DropdownItems(dropdownMenu, selectors);
 
     const defaultSelectorId = selectors[0].selectorId;

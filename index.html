@@ -15,52 +15,110 @@
         <script src="https://cdn.plot.ly/plotly-3.4.0.js"></script>
     </head>
     <body>
-        <h1>Homeless graduate</h1>
-        <div class="chart-container">
-            <div id="chart1aDegreeSupply" class="chart"></div>
-        </div>
-        <div class="chart-container">
-            <div id="chart1bSkillByAge" class="chart"></div>
-        </div>
-        <div class="chart-container">
-            <div id="chart2TransitionWindow" class="chart"></div>
-        </div>
-        <div class="chart-container">
-            <div id="chart3SubgroupBottleneck" class="chart"></div>
-        </div>
-        <div class="chart-container">
-            <div id="chart4GapShapes" class="chart"></div>
-        </div>
-        <div class="chart-container">
-            <div id="chart5FieldConversion" class="chart"></div>
-        </div>
-        <div class="chart-container">
-            <div id="chart6WorkFit" class="chart"></div>
-        </div>
-        <div class="chart-container">
-            <div class="chart-7-panel">
-                <div class="mb-3 chart-7-control">
-                    <label id="chart7SelectorLabel" for="chart7DropdownButton" class="form-label"></label>
-                    <div class="dropdown">
-                        <button
-                            id="chart7DropdownButton"
-                            class="btn chart-7-dropdown-toggle dropdown-toggle"
-                            type="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                        ></button>
-                        <ul id="chart7DropdownMenu" class="dropdown-menu chart-7-dropdown-menu"></ul>
+        <main>
+            <h1>Homeless graduate</h1>
+            <br />
+            <h2>Key</h2>
+            <article class="explanatory-modal amber-modal">
+                <p>
+                    <strong>Terminology</strong><br />
+                    FTE = full-time employment<br />
+                    pp = percentage points<br />
+                    Short-term = around 4 months after graduation<br />
+                    Medium-term = around 3 years after graduation<br />
+                </p>
+                <p>
+                    <em>
+                        A note on reading the data: Gaps are shown in percentage
+                        points, not percentages. For example, a change from 60%
+                        to 70% is a 10 pp increase.
+                    </em>
+                </p>
+            </article>
+            <br />
+            <article class="explanatory-modal blue-modal">
+                <strong>Datasets used</strong><br />
+                QILT (Quality Indicators for Teaching and Learning) – the
+                national survey system for Australian higher education outcomes
+                <ul>
+                    <li>
+                        GOS (Graduate Outcomes Survey) – short-term graduate
+                        outcomes
+                    </li>
+                    <li>
+                        GOS-L (Graduate Outcomes Survey - Longitudinal) –
+                        medium-term graduate outcomes
+                    </li>
+                </ul>
+
+                ABS (Australian Bureau of Statistics) - Australia's national
+                statistical agency
+                <ul>
+                    <li>
+                        SEW (Survey of Education and Work) – broader education
+                        and work context in Australia
+                    </li>
+                </ul>
+            </article>
+            <div class="chart-container">
+                <div id="chart1aDegreeSupply" class="chart"></div>
+            </div>
+            <div class="chart-container">
+                <div id="chart1bSkillByAge" class="chart"></div>
+            </div>
+            <div class="chart-container">
+                <div id="chart2TransitionWindow" class="chart"></div>
+            </div>
+            <div class="chart-container">
+                <div id="chart3SubgroupBottleneck" class="chart"></div>
+            </div>
+            <div class="chart-container">
+                <div id="chart4GapShapes" class="chart"></div>
+            </div>
+            <div class="chart-container">
+                <div id="chart5FieldConversion" class="chart"></div>
+            </div>
+            <div class="chart-container">
+                <div id="chart6WorkFit" class="chart"></div>
+            </div>
+            <div class="chart-container">
+                <div class="chart-7-panel">
+                    <div class="mb-3 chart-7-control">
+                        <label
+                            id="chart7SelectorLabel"
+                            for="chart7DropdownButton"
+                            class="form-label"
+                        ></label>
+                        <div class="dropdown">
+                            <button
+                                id="chart7DropdownButton"
+                                class="btn chart-7-dropdown-toggle dropdown-toggle"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            ></button>
+                            <ul
+                                id="chart7DropdownMenu"
+                                class="dropdown-menu chart-7-dropdown-menu"
+                            ></ul>
+                        </div>
                     </div>
-                </div>
-                <div class="align-items-start row g-3">
-                    <div class="col-12 col-md-8">
-                        <div id="chart7SubgroupComparator" class="chart chart-7-chart"></div>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <aside id="chart7ExplanationCard" class="card chart-7-card"></aside>
+                    <div class="align-items-start row g-3">
+                        <div class="col-12 col-md-8">
+                            <div
+                                id="chart7SubgroupComparator"
+                                class="chart chart-7-chart"
+                            ></div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <aside
+                                id="chart7ExplanationCard"
+                                class="card chart-7-card"
+                            ></aside>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
     </body>
 </html>

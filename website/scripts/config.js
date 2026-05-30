@@ -13,7 +13,7 @@ export const CHART_7_ID = "chart_7_subgroup_comparator";
 export const CHART_METADATA_ID = "chart_metadata";
 
 export const CHART_TITLES = {
-    chart1a: "Degrees are becoming more common",
+    chart1a: "More Australians now have degrees",
     chart1b: "High-skill work is age-sorted",
     chart2: "The first year is the weak point",
     chart3: "The bottleneck is uneven",
@@ -24,7 +24,11 @@ export const CHART_TITLES = {
 };
 
 
-// theme colours
+// theme 
+
+// export const FONT_FAMILY = "sans-serif"; // ! only for photo saving
+export const FONT_FAMILY = '"Source Sans 3", sans-serif';
+
 export const THEME_COLOURS = {
     amber700: "#A55A1f",
     blue700: "#2F5D7E",
@@ -152,69 +156,70 @@ export const CHART_5_GAIN_VALUES = {
 
 
 // chart 7
-export const CHART_7_ELEMENT_IDS = {
-    dropdownButton: "chart7DropdownButton",
-    dropdownMenu: "chart7DropdownMenu",
-    selectorLabel: "chart7SelectorLabel",
-    explanationCard: "chart7ExplanationCard"
-};
-
-export const CHART_7_CARD_LABELS = {
-    selector: "Choose a subgroup comparison",
-    shortTermGap: "Short-term gap",
-    mediumTermGap: "Medium-term gap",
-    change: "Change"
-};
-
-export const CHART_7_DIMENSIONS = {
-    height: 360,
-    leftMargin: 70,
-    rightMargin: 20,
-    topMargin: 60,
-    bottomMargin: 50
-};
-
-export const CHART_7_GAP_PATTERN_THRESHOLDS = {
-    nearZero: 1,
-    meaningful: 3,
-    substantialShrinkRatio: 0.5
-};
-
-export const CHART_7_GAP_PATTERNS = {
-    persists: {
-        label: "Persists",
-        colour: THEME_COLOURS.amber700,
-        sentence: "This gap persists into the medium term."
+export const CHART_7_RENDERING = {
+    elementIds: {
+        dropdownButton: "chart7DropdownButton",
+        dropdownMenu: "chart7DropdownMenu",
+        selectorLabel: "chart7SelectorLabel",
+        explanationCard: "chart7ExplanationCard"
     },
-    mostlyCloses: {
-        label: "Mostly closes",
-        colour: THEME_COLOURS.blue500,
-        sentence: "This gap mostly closes by the medium term."
+    dimensions: {
+        height: 360,
+        leftMargin: 70,
+        rightMargin: 20,
+        topMargin: 60,
+        bottomMargin: 50
     },
-    reverses: {
-        label: "Reverses",
-        colour: THEME_COLOURS.blue700,
-        dash: "dash",
-        sentence: "This gap reverses by the medium term."
-    },
-    smallThroughout: {
-        label: "Small throughout",
-        colour: THEME_COLOURS.grey500,
-        sentence: "This comparison is small throughout."
+    yAxisPadding: {
+        lower: 4,
+        upper: 1
     }
 };
 
-export const CHART_7_SIGN_DIRECTIONS = {
-    comparisonMinusReference: "comparison_group_pct - reference_group_pct",
-    referenceMinusComparison: "reference_group_pct - comparison_group_pct"
+export const CHART_7_VALUES = {
+    gapPatternThresholds: {
+        nearZero: 1,
+        meaningful: 3,
+        substantialShrinkRatio: 0.5
+    },
+    gapPatterns: {
+        persists: {
+            label: "Persists",
+            colour: THEME_COLOURS.amber700,
+            sentence: "This gap persists into the medium term."
+        },
+        mostlyCloses: {
+            label: "Mostly closes",
+            colour: THEME_COLOURS.blue500,
+            sentence: "This gap mostly closes by the medium term."
+        },
+        reverses: {
+            label: "Reverses",
+            colour: THEME_COLOURS.blue700,
+            dash: "dash",
+            sentence: "This gap reverses by the medium term."
+        },
+        smallThroughout: {
+            label: "Small throughout",
+            colour: THEME_COLOURS.grey500,
+            sentence: "This comparison is small throughout."
+        }
+    },
+    signDirections: {
+        comparisonMinusReference: "comparison_group_pct - reference_group_pct",
+        referenceMinusComparison: "reference_group_pct - comparison_group_pct"
+    }
 };
 
-export const CHART_7_SIGN_CAPTIONS = {
-    comparisonMinusReference: "Positive values mean the comparison group has a higher full-time employment rate than the reference group. Negative values mean the gap reverses.",
-    referenceMinusComparison: "Positive values mean the reference group has a higher full-time employment rate than the comparison group. Negative values mean the gap reverses."
-};
-
-export const CHART_7_Y_AXIS_PADDING = {
-    lower: 4,
-    upper: 1
+export const CHART_7_TEXT = {
+    cardLabels: {
+        selector: "Choose a subgroup comparison",
+        shortTermGap: "Short-term gap",
+        mediumTermGap: "Medium-term gap",
+        change: "Change"
+    },
+    signCaptions: {
+        comparisonMinusReference: "Positive values mean the comparison group has a higher full-time employment rate than the reference group. Negative values mean the gap reverses.",
+        referenceMinusComparison: "Positive values mean the reference group has a higher full-time employment rate than the comparison group. Negative values mean the gap reverses."
+    }
 };

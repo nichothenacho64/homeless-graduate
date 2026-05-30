@@ -1,4 +1,5 @@
 import {
+    FONT_FAMILY,
     GLOBAL_TRACES,
     GLOBAL_CONFIG,
     GLOBAL_LAYOUT,
@@ -8,20 +9,18 @@ import {
 import { capitaliseWord } from "./utils.js";
 
 export function addGlobalLayoutDefaults(layout) {
-    const fontFamily = '"Source Sans 3", sans-serif';
-
     return {
         ...GLOBAL_LAYOUT,
         ...layout,
         font: {
             ...layout.font,
-            family: fontFamily
+            family: FONT_FAMILY
         },
         hoverlabel: {
             ...layout.hoverlabel,
             font: {
                 ...layout.hoverlabel?.font,
-                family: fontFamily
+                family: FONT_FAMILY
             }
         }
     };

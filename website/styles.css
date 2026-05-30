@@ -1,18 +1,42 @@
+@import url("./bootstrap-overrides.css");
+
 :root {
     --amber-700: #A55A1f;
     --blue-700: #2F5D7E;
     --amber-500: #D08A3C;
     --blue-500: #5E88A8;
     --amber-300: #E7C48B;
+    --amber-300-opaque: #E7C48B33;
     --blue-300: #AFC6D8;
+    --blue-300-opaque: #AFC6D833;
     --grey-500: #a0a0a0;
     --text-colour: #1F2328;
     --background-colour: #FFFDF9;
 }
 
 body {
-    font-family: "Source Sans 3", sans-serif;
+    font-family: "Source Sans 3", sans-serif; 
     background-color: var(--background-colour);
+    font-size: 0.85rem;
+}
+
+main {
+    margin: 0 5em;
+}
+
+.explanatory-modal {
+   border-radius: 15px;
+   padding: 8px;
+}
+
+.blue-modal {
+    background-color: var(--blue-300-opaque);
+    border: 1px solid var(--blue-500);
+}
+
+.amber-modal {
+    background-color: var(--amber-300-opaque);
+    border: 1px solid var(--amber-500);
 }
 
 .chart-container {
@@ -21,7 +45,7 @@ body {
 }
 
 .chart {
-    width: 75%;
+    width: 95%;
 }
 
 .chart-7-panel {
@@ -32,34 +56,14 @@ body {
     width: 100%;
 }
 
-.chart-7-dropdown-toggle {
-    --bs-btn-color: var(--background-colour);
-    --bs-btn-bg: var(--amber-500);
-    --bs-btn-border-color: var(--amber-500);
-    --bs-btn-hover-color: var(--background-colour);
-    --bs-btn-hover-bg: var(--amber-700);
-    --bs-btn-hover-border-color: var(--amber-700);
-    --bs-btn-active-color: var(--background-colour);
-    --bs-btn-active-bg: var(--amber-700);
-    --bs-btn-active-border-color: var(--amber-700);
-}
-
-.chart-7-dropdown-menu {
-    --bs-dropdown-bg: var(--background-colour);
-    --bs-dropdown-link-color: var(--text-colour);
-    --bs-dropdown-link-hover-bg: var(--amber-300);
-    --bs-dropdown-link-active-color: var(--background-colour);
-    --bs-dropdown-link-active-bg: var(--amber-500);
+.chart-7-caption {
+    color: var(--text-colour);
 }
 
 .chart-7-card {
     color: var(--text-colour);
     background-color: var(--background-colour);
     border-color: var(--grey-500);
-}
-
-.chart-7-caption {
-    color: var(--text-colour);
 }
 
 @media (max-width: 900px) {

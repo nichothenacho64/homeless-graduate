@@ -1,0 +1,19 @@
+.chart-7-dropdown-toggle {
+    --bs-btn-color: var(--background-colour);
+    --bs-btn-bg: var(--amber-500);
+    --bs-btn-border-color: var(--amber-500);
+    --bs-btn-hover-color: var(--background-colour);
+    --bs-btn-hover-bg: var(--amber-700);
+    --bs-btn-hover-border-color: var(--amber-700);
+    --bs-btn-active-color: var(--background-colour);
+    --bs-btn-active-bg: var(--amber-700);
+    --bs-btn-active-border-color: var(--amber-700);
+}
+
+.chart-7-dropdown-menu {
+    --bs-dropdown-bg: var(--background-colour);
+    --bs-dropdown-link-color: var(--text-colour);
+    --bs-dropdown-link-hover-bg: var(--amber-300);
+    --bs-dropdown-link-active-color: var(--background-colour);
+    --bs-dropdown-link-active-bg: var(--amber-500);
+}
